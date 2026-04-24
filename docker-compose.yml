@@ -1,0 +1,46 @@
+services:
+  # Servidor web Apache amb PHP i suport MySQL
+  web:
+    build: ./projecte
+    container_name: incidencia-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./projecte:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # Servidor de base de dades MySQL
+  db:
+    image: mysql:8.0
+    container_name: gestorIncidencia-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_DATABASE: gestorIncidencia
+      MYSQL_USER: usuari
+      MYSQL_PASSWORD: usuari1234
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  # Adminer per gestionar la base de dades
+  adminer:
+    image: adminer
+    container_name: gestorIncidencia-adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:
+    driver: bridge
