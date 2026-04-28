@@ -1,13 +1,7 @@
-<!doctype html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gestor d'Incidències - Persona</title>
-</head>
-<body>
+<?php 
+$titulo = "Gestor d'Incidències - Persona";
+include_once "header.php"; 
+?>
     <header>
 
     </header>
@@ -38,5 +32,4 @@
             </div>
         </div>
     </main>
-</body>
-</html>
+<?php include_once "footer.php"; ?>
