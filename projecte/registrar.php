@@ -9,4 +9,4 @@ VALUES
 (?, ?, ?)");
 $sentencia->bind_param("ssi", $descripcio, $data, $idDepartament);
 $sentencia->execute();
-// header("Location: listar.php");
+// header("Location: llistar.php");

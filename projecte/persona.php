@@ -24,12 +24,12 @@ include_once "header.php";
             </div>
             <div>
                 <h3>Consultar Incidència</h3>
-                <form action="">
+                <form action="llistar.php" method="POST">
                     <label for="idIncidencia">ID de l'incidència</label>
-                    <input type="number" name="idDepartament" id="idIncidencia" placeholder="ID d'Incidencia: ">
+                    <input type="number" name="idIncidencia" id="idIncidencia" placeholder="ID d'Incidencia: ">
+                    <input type="submit" value="Enviar">
                 </form>
-                <input type="submit" value="Enviar">
-            </div>
+                </div>
         </div>
     </main>
 <?php include_once "footer.php"; ?>
