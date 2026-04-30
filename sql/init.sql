@@ -1,7 +1,7 @@
 USE gestorIncidencia;
 
 CREATE TABLE TIPUS(
-    idTipo INT AUTO_INCREMENT PRIMARY KEY,
+    idTipus INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(200)
 );
 
@@ -21,13 +21,13 @@ CREATE TABLE INCIDENCIA(
     data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     idDepartament INT,
     idTecnic INT,
-    idTipo INT,
+    idTipus INT,
     dataFinalitzacio DATE,
     prioritat ENUM('Alta', 'Mitja', 'Baixa'),
 
     FOREIGN KEY(idDepartament) REFERENCES DEPARTAMENT(idDepartament),
     FOREIGN KEY(idTecnic) REFERENCES TECNIC(idTecnic),
-    FOREIGN KEY(idTipo) REFERENCES TIPUS(idTipo)
+    FOREIGN KEY(idTipus) REFERENCES TIPUS(idTipus)
 );
 
 CREATE TABLE ACTUACIO(

@@ -10,7 +10,7 @@ include_once "header.php";
             <div class="d-grid gap-3" style="width: 300px;">
                 <a href="persona.php" class="btn btn-info">Profesor</a>
                 <a href="tecnic.php" class="btn btn-info">Tècnic</a>
-                <a href="llistarIncidenciasAdmin.php" class="btn btn-info">Responsable informàtic</a>
+                <a href="modificarIncidencies.php" class="btn btn-info">Responsable informàtic</a>
             </div>
         </div>
     </main>

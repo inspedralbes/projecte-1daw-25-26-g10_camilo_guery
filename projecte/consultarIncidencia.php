@@ -3,7 +3,7 @@ include_once "header.php";
 $mysqli = include_once "conexio.php";
 $idIncidencia = $_POST["idIncidencia"];
 $idIncidencia = (int)$idIncidencia;
-$resultado = $mysqli->query("SELECT idIncidencia, descripcio, data, idDepartament, idTecnic, idTipo, dataFinalitzacio, prioritat FROM INCIDENCIA WHERE idIncidencia = $idIncidencia");
+$resultado = $mysqli->query("SELECT idIncidencia, descripcio, data, idDepartament, idTecnic, idTipus, dataFinalitzacio, prioritat FROM INCIDENCIA WHERE idIncidencia = $idIncidencia");
 $incidencias = $resultado->fetch_all(MYSQLI_ASSOC);
 ?>
 
@@ -30,7 +30,7 @@ $incidencias = $resultado->fetch_all(MYSQLI_ASSOC);
                         <td><?php echo $incidencia["idDepartament"] ?></td>
                         <td><?php echo $incidencia["idTecnic"] ?></td>
                         <td><?php echo $incidencia["idTecnic"] ?></td>
-                        <td><?php echo $incidencia["idTipo"] ?></td>
+                        <td><?php echo $incidencia["idTipus"] ?></td>
                         <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
                         <td><?php echo $incidencia["prioritat"] ?></td>
                     </tr>

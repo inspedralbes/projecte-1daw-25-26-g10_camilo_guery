@@ -1,7 +1,7 @@
 <?php
 include_once "header.php";
 $mysqli = include_once "conexio.php";
-$resultadoIncidencia = $mysqli->query("SELECT idIncidencia, descripcio, data, idDepartament, idTecnic, idTipo, dataFinalitzacio, prioritat FROM INCIDENCIA");
+$resultadoIncidencia = $mysqli->query("SELECT idIncidencia, descripcio, data, idDepartament, idTecnic, idTipus, dataFinalitzacio, prioritat FROM INCIDENCIA");
 $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
 $resultadoTecnicos = $mysqli->query("SELECT idTecnic, nom FROM TECNIC");
 $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
@@ -39,10 +39,21 @@ $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
                                     <?php echo $tecnico["nom"]; ?>
                                 </option>
                             <?php } ?>
-
                         </select>
                     </td>
-                    <td><?php echo $incidencia["idTipo"] ?></td>
+                    <td>
+                        <select name="idTipus[<?php echo $incidencia["idIncidencia"]; ?>]">
+                            <option value="" <?php echo ($incidencia["idTipus"] == null) ? "selected" : ""; ?>>
+                                Sin asignar
+                            </option>
+                            <?php foreach ($tipus as $tipo) { ?>
+                                <option value="<?php echo $tipo["idTipus"]; ?>"
+                                    <?php echo ($tipo["idTipus"] == $incidencia["idTipus"]) ? "selected" : ""; ?>>
+                                    <?php echo $tipo["nom"]; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </td>
                     <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
                     <td><?php echo $incidencia["prioritat"] ?></td>
                 </tr>
