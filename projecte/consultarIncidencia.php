@@ -37,4 +37,4 @@ $incidencias = $resultado->fetch_all(MYSQLI_ASSOC);
                 <?php } ?>
             </tbody>
         </table>
-        <a class="" href="index.html">Volver</a>
+        <a class="" href="index.php">Volver</a>

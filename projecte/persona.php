@@ -31,5 +31,6 @@ include_once "header.php";
                 </form>
             </div>
         </div>
+        <a href="index.php">Tornar enrere</a>
     </main>
 <?php include_once "footer.php"; ?>
