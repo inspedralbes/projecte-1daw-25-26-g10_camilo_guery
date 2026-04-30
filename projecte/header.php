@@ -16,3 +16,13 @@ error_reporting(E_ALL);
 
 <body>
     <main class="container-fluid">
+        <header class="px-3 py-3 bg-dark">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <h3>
+                    <a href="index.php" class="text-white text-decoration-none">Gestor d'Incidències</a>
+                </h3>
+                <nav>
+                    <a href="index.php" class="text-white text-decoration-none me-3">Inici</a>
+                </nav>
+            </div>
+        </header>
