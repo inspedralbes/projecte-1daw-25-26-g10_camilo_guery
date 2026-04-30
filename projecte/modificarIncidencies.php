@@ -5,6 +5,8 @@ $resultadoIncidencia = $mysqli->query("SELECT idIncidencia, descripcio, data, id
 $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
 $resultadoTecnicos = $mysqli->query("SELECT idTecnic, nom FROM TECNIC");
 $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
+$resultadoTipus = $mysqli->query("SELECT idTipus, nom FROM TIPUS");
+$tipus = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
 ?>
 <form action="actualitzar.php" method="POST">
     <table>
