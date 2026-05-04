@@ -1,4 +1,5 @@
 <?php
+$titulo = "Gestor d'Incidències - Modificació d'Incidències";
 include_once "header.php";
 $mysqli = include_once "conexio.php";
 $resultadoIncidencia = $mysqli->query("SELECT idIncidencia, descripcio, data, idDepartament, idTecnic, idTipus, dataFinalitzacio, prioritat FROM INCIDENCIA");
@@ -12,13 +13,13 @@ $tipus = $resultadoTipus->fetch_all(MYSQLI_ASSOC);
     <table>
         <thead>
             <tr>
-                <th>Id d'Incidencia</th>
-                <th>Descripcio</th>
+                <th>Id d'Incidència</th>
+                <th>Descripció</th>
                 <th>Data</th>
                 <th>Departament</th>
-                <th>Tecnic</th>
+                <th>Tècnic</th>
                 <th>Tipus</th>
-                <th>Data Finalitzacio</th>
+                <th>Data Finalització</th>
                 <th>Prioritat</th>
             </tr>
         </thead>
