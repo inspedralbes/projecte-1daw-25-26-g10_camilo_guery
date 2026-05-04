@@ -6,7 +6,7 @@ $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
 $resultadoTecnicos = $mysqli->query("SELECT idTecnic, nom FROM TECNIC");
 $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
 $resultadoTipus = $mysqli->query("SELECT idTipus, nom FROM TIPUS");
-$tipus = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
+$tipus = $resultadoTipus->fetch_all(MYSQLI_ASSOC);
 ?>
 <form action="actualitzar.php" method="POST">
     <table>
@@ -17,7 +17,7 @@ $tipus = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
                 <th>Data</th>
                 <th>Departament</th>
                 <th>Tecnic</th>
-                <th>Tipo</th>
+                <th>Tipus</th>
                 <th>Data Finalitzacio</th>
                 <th>Prioritat</th>
             </tr>
@@ -57,7 +57,22 @@ $tipus = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
                         </select>
                     </td>
                     <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                    <td><?php echo $incidencia["prioritat"] ?></td>
+                    <td>
+                        <select name="prioritat[<?php echo $incidencia["idIncidencia"]; ?>]">
+                            <option value="" <?php echo ($incidencia["prioritat"] == null) ? "selected" : ""; ?>>
+                                Sin asignar
+                            </option>
+                            <option value="Alta" <?php echo ($incidencia["prioritat"] == "Alta") ? "selected" : ""; ?>>
+                                Alta
+                            </option>
+                            <option value="Mitja" <?php echo ($incidencia["prioritat"] == "Mitja") ? "selected" : ""; ?>>
+                                Mitja
+                            </option>
+                            <option value="Baixa" <?php echo ($incidencia["prioritat"] == "Baixa") ? "selected" : ""; ?>>
+                                Baixa
+                            </option>
+                        </select>
+                    </td>
                 </tr>
             <?php } ?>
         </tbody>
