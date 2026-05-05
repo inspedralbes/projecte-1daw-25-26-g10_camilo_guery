@@ -2,7 +2,12 @@
 $titulo = "Gestor d'Incidències - Modificació d'Incidències";
 include_once "header.php";
 $mysqli = include_once "conexio.php";
-$resultadoIncidencia = $mysqli->query("SELECT idIncidencia, descripcio, data, idDepartament, idTecnic, idTipus, dataFinalitzacio, prioritat FROM INCIDENCIA");
+$resultadoIncidencia = $mysqli->query("SELECT i.idIncidencia, i.descripcio, i.data,
+       d.nom AS nomDepartament,
+       i.idTecnic, i.idTipus,
+       i.dataFinalitzacio, i.prioritat
+FROM INCIDENCIA i
+LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament");
 $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
 $resultadoTecnicos = $mysqli->query("SELECT idTecnic, nom FROM TECNIC");
 $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
@@ -30,7 +35,7 @@ $tipus = $resultadoTipus->fetch_all(MYSQLI_ASSOC);
                     <td><?php echo $incidencia["idIncidencia"] ?></td>
                     <td><?php echo $incidencia["descripcio"] ?></td>
                     <td><?php echo $incidencia["data"] ?></td>
-                    <td><?php echo $incidencia["idDepartament"] ?></td>
+                    <td><?php echo $incidencia["nomDepartament"] ?></td>
                     <td>
                         <select name="idTecnic[<?php echo $incidencia["idIncidencia"]; ?>]">
                             <option value="" <?php echo ($incidencia["idTecnic"] == null) ? "selected" : ""; ?>>
