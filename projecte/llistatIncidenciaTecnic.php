@@ -2,8 +2,20 @@
 include_once "header.php";
 $mysqli = include_once "conexio.php";
 $idTecnic = $_GET["idTecnic"];
-$resultadoIncidencia = $mysqli->query("SELECT i.idIncidencia, i.descripcio, i.data, i.idDepartament, d.nom AS nomDepartament, i.idTipus, i.dataFinalitzacio, i.prioritat FROM INCIDENCIA i JOIN DEPARTAMENT d ON (i.idDepartament = d.idDepartament) WHERE i.idTecnic = $idTecnic");
-$incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
+$sentencia = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
+       d.nom AS nomDepartament,
+       t.nom AS nomTipus,
+       i.dataFinalitzacio, i.prioritat
+FROM INCIDENCIA i
+JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+JOIN TIPUS t ON i.idTipus = t.idTipus
+WHERE i.idTecnic = ?");
+
+$sentencia->bind_param("i", $idTecnic);
+$sentencia->execute();
+
+$result = $sentencia->get_result();
+$incidencias = $result->fetch_all(MYSQLI_ASSOC);
 # Obtenemos solo una fila, que será el videojuego a editar
 if (!$incidencias) {
     echo "No hi ha incidències per a aquest tècnic.";
@@ -33,7 +45,7 @@ if (!$incidencias) {
                     <td><?php echo $incidencia["descripcio"] ?></td>
                     <td><?php echo $incidencia["data"] ?></td>
                     <td><?php echo $incidencia["nomDepartament"] ?></td>
-                    <td><?php echo $incidencia["idTipus"] ?></td>
+                    <td><?php echo $incidencia["nomTipus"] ?></td>
                     <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
                     <td><?php echo $incidencia["prioritat"] ?></td>
                     <td><a href="actuacioIncidencia.php?idIncidencia=<?php echo $incidencia["idIncidencia"] ?>">Veure</a></td>
