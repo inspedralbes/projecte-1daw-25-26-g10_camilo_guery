@@ -80,4 +80,4 @@ $tipus = $resultadoTipus->fetch_all(MYSQLI_ASSOC);
     </table>
     <input type="submit" value="Guardar cambios">
 </form>
-        <a class="" href="index.html">Volver</a>
+        <a class="" href="index.php">Volver</a>

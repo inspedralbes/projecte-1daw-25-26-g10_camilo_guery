@@ -9,7 +9,7 @@ $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
         <div>
             <ul>
                 <?php foreach ($tecnicos as $tecnico) { ?>
-                   <a href="llistatTecnic.php?idTecnic=<?php echo $tecnico["idTecnic"] ?>"> <li> <?php echo $tecnico["nom"]; ?> </li> </a>
+                   <a href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $tecnico["idTecnic"] ?>"> <li> <?php echo $tecnico["nom"]; ?> </li> </a>
                 <?php } ?>
             </ul>
         </div>
