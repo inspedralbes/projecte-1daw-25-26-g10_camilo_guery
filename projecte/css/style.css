@@ -1,0 +1,9 @@
+
+/* ESTILOS PARA LAS VENTANAS DE INFORME */
+
+.window-info.active {
+    display: block; 
+}
+.window-info {
+    display: none; 
+}
