@@ -16,6 +16,5 @@ $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
                <a href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $tecnico["idTecnic"] ?>" class="btn btn-warning">  <?php echo $tecnico["nom"]; ?> </a>
             <?php } ?>
         </div>
-    </div>
-
+    </div>    
 <?php include_once "footer.php"; ?>

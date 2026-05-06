@@ -24,7 +24,7 @@ if (!$incidencias) {
 }
 ?>
 
- <table>
+ <table class="table">
         <thead>
             <tr>
                 <th>Id d'Incidència</th>

@@ -24,4 +24,5 @@ foreach ($_POST["idTecnic"] as $idIncidencia => $idTecnic) {
 
     $sentencia->execute();
 }
+header("Location: modificarIncidencies.php");
 ?>

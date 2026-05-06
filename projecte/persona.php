@@ -2,10 +2,7 @@
 $titulo = "Gestor d'Incidències - Persona";
 include_once "header.php"; 
 ?>
-    <header>
 
-    </header>
-    <main>
         <div>
             <div>
                 <h3>Registrar Incidència</h3>
@@ -32,5 +29,5 @@ include_once "header.php";
             </div>
         </div>
         <a href="index.php">Tornar enrere</a>
-    </main>
+
 <?php include_once "footer.php"; ?>
