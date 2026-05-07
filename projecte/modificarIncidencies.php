@@ -13,10 +13,42 @@ LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
 LEFT JOIN TECNIC te ON i.idTecnic = te.idTecnic
 LEFT JOIN TIPUS t ON i.idTipus = t.idTipus");
 $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
+
 $resultadoTecnicos = $mysqli->query("SELECT idTecnic, nom FROM TECNIC");
 $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
+
 $resultadoTipus = $mysqli->query("SELECT idTipus, nom FROM TIPUS");
 $tipus = $resultadoTipus->fetch_all(MYSQLI_ASSOC);
+
+
+
+// IF PARA CONTROLAR LOS POST DEL FORMULARIO
+$incidenciasFiltradas = [];
+$idTecnicSeleccionado = "";
+
+if (isset($_POST["tipusInforme"])) {
+    if($_POST["tipusInforme"] == "informeTecnics") {
+        $idTecnicSeleccionado = $_POST["idTecnic"];
+        
+        $sentencia = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            te.nom AS nomTecnic,
+            t.nom AS nomTipus,
+            i.idTecnic, i.idTipus,
+            i.dataFinalitzacio, i.prioritat
+        FROM INCIDENCIA i
+        LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+        LEFT JOIN TECNIC te ON i.idTecnic = te.idTecnic
+        LEFT JOIN TIPUS t ON i.idTipus = t.idTipus
+        WHERE i.idTecnic = ?");
+
+        $sentencia->bind_param("i", $idTecnicSeleccionado);
+        $sentencia->execute();
+
+        $incidenciasFiltradas = $sentencia->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+}
+
 ?>
 <!-- funcion para filtrar orden -->
 <?php
@@ -190,16 +222,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     <div id="informeTecnics" class="window-info">
         <h3>Informe de Tècnics</h3>
-        <form action="filtrarTecnico.php" method="POST">
-            <select name="idTecnic[<?php echo $incidencia["idIncidencia"]; ?>]">
+        <form action="modificarIncidencies.php" method="POST">
+            <input type="hidden" name="tipusInforme" value="informeTecnics">
+            <select name="idTecnic">
                 <?php foreach ($tecnicos as $tecnico) { ?>
                     <option value="<?php echo $tecnico["idTecnic"]; ?>"
-                        <?php echo ($tecnico["idTecnic"] == $incidencia["idTecnic"]) ? "selected" : ""; ?>>
-                        <?php echo $tecnico["nom"]; ?>
+                    <?php echo ($tecnico["idTecnic"] == $idTecnicSeleccionado) ? "selected" : ""; ?>>
+                        <?php echo htmlspecialchars($tecnico["nom"]); ?>
                     </option>
                 <?php } ?>
             </select>
-            <input type="submit" value="Filtrar" onclick="showWindow('informeTecnics')">
+            <input type="submit" value="Filtrar">
         </form>
         <table>
             <thead>
@@ -215,13 +248,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             </thead>
             <tbody>
                 <?php
-                foreach ($incidencias as $incidencia) { ?>
+                foreach ($incidenciasFiltradas as $incidencia) { ?>
                     <tr>
                         <td><?php echo $incidencia["idIncidencia"] ?></td>
-                        <td><?php echo $incidencia["descripcio"] ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
                         <td><?php echo $incidencia["data"] ?></td>
-                        <td><?php echo $incidencia["nomDepartament"] ?></td>
-                        <td><?php echo $incidencia["nomTipus"] ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["nomDepartament"]) ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["nomTipus"]) ?></td>
                         <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
                         <td><?php echo $incidencia["prioritat"] ?></td>
                     </tr>
@@ -244,4 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     <a class="" href="index.php">Volver</a>
 </main>
+<script>
+
+</script>
 <?php include_once "footer.php"; ?>
