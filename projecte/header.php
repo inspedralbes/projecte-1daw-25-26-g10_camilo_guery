@@ -22,8 +22,5 @@ error_reporting(E_ALL);
             <h3>
                 <a href="index.php" class="text-white text-decoration-none">Gestor d'Incidències</a>
             </h3>
-            <nav>
-                <a href="index.php" class="text-white text-decoration-none me-3">Inici</a>
-            </nav>
         </div>
     </header>

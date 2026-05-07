@@ -53,4 +53,16 @@ if (!$incidencias) {
             <?php } ?>
         </tbody>
     </table>
+
+<form method="GET" action="gestionarIncidencia.php">
+  <div class="input-group mt-2">
+    <span class="input-group-text">ID</span>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="buscarId" name="idIncidencia" placeholder="Buscar">
+      <label for="buscarId">Buscar per ID</label>
+    </div>
+    <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </div>
+</form>
 <?php include_once "footer.php"; ?>
