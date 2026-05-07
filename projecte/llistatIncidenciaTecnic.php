@@ -23,24 +23,122 @@ if (!$incidencias) {
     exit;
 }
 ?>
+<!-- funcion para filtrar orden -->
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
- <table class="table">
-        <thead>
-            <tr>
-                <th>Id d'Incidència</th>
-                <th>Descripció</th>
-                <th>Data</th>
-                <th>Departament</th>
-                <th>Tipus</th>
-                <th>Data Finalització</th>
-                <th>Prioritat</th>
-                <th>Actuacions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            foreach ($incidencias as $incidencia) { ?>
-                <tr>
+    if (isset($_GET["prioritat"])) {
+        $qboton = "prioritat";
+    } elseif (isset($_GET["departament"])) {
+        $qboton = "departament";
+    } elseif (isset($_GET["data"])) {
+        $qboton = "data";
+    } else { 
+        $qboton = null;
+    }
+
+    switch ($qboton) {
+        case 'prioritat':
+            $snt = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            t.nom AS nomTipus,
+            i.dataFinalitzacio, i.prioritat
+            FROM INCIDENCIA i
+            JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+            JOIN TIPUS t ON i.idTipus = t.idTipus
+            WHERE i.idTecnic = ?
+            ORDER BY CASE 
+                WHEN i.prioritat = 'Alta' THEN 1
+                WHEN i.prioritat = 'Mitja' THEN 2
+                WHEN i.prioritat = 'Baixa' THEN 3
+                ELSE 4
+            END");
+
+            $snt->bind_param("i", $idTecnic);
+            $snt->execute();
+
+            $resultat = $snt->get_result();
+            $incidencias = $resultat->fetch_all(MYSQLI_ASSOC);
+            break;
+        
+        case 'departament':
+            $snt = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            t.nom AS nomTipus,
+            i.dataFinalitzacio, i.prioritat
+            FROM INCIDENCIA i
+            JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+            JOIN TIPUS t ON i.idTipus = t.idTipus
+            WHERE i.idTecnic = ?
+            ORDER BY CASE 
+                WHEN d.nom = 'Programacio' THEN 1
+                WHEN d.nom = 'Sistemes' THEN 2
+                WHEN d.nom = 'Base de Dades' THEN 3
+                ELSE 4
+            END");
+
+            $snt->bind_param("i", $idTecnic);
+            $snt->execute();
+
+            $resultat = $snt->get_result();
+            $incidencias = $resultat->fetch_all(MYSQLI_ASSOC);
+            break;
+
+        case 'data':
+            $snt = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            t.nom AS nomTipus,
+            i.dataFinalitzacio, i.prioritat
+            FROM INCIDENCIA i
+            JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+            JOIN TIPUS t ON i.idTipus = t.idTipus
+            WHERE i.idTecnic = ?
+            ORDER BY i.data ASC");
+
+            $snt->bind_param("i", $idTecnic);
+            $snt->execute();
+
+            $resultat = $snt->get_result();
+            $incidencias = $resultat->fetch_all(MYSQLI_ASSOC);
+            break;       
+    }
+       
+}
+?>
+
+<form method="GET">
+    <div class="btn-group float-end" role="group" aria-label="Basic outlined example">
+        <button type="submit" name="prioritat" class="btn btn-outline-dark" value="prioritat">Prioritat</button>
+        <button type="submit" name="departament" class="btn btn-outline-dark" value="departament">Departament</button>
+        <button type="submit" name="data" class="btn btn-outline-dark" value="data">Data</button>
+        <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Descripció</th>
+            <th>Data</th>
+            <th>Departament</th>
+            <th>Tipus</th>
+            <th>Data Finalització</th>
+            <th>Prioritat</th>
+            <th>Actuacions</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+        foreach ($incidencias as $incidencia) { 
+            $prioritat = match($incidencia["prioritat"]) {
+                'Alta' => 'table-danger',
+                'Mitja' => 'table-warning',
+                'Baixa' => 'table-info',
+                default => 'tabla-light'
+            };
+?>
+                <tr class="<?php echo $prioritat?>">
                     <td><?php echo $incidencia["idIncidencia"] ?></td>
                     <td><?php echo $incidencia["descripcio"] ?></td>
                     <td><?php echo $incidencia["data"] ?></td>
