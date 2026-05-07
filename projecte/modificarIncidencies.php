@@ -20,11 +20,13 @@ $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
 $resultadoTipus = $mysqli->query("SELECT idTipus, nom FROM TIPUS");
 $tipus = $resultadoTipus->fetch_all(MYSQLI_ASSOC);
 
-
+$resultadoDepartamentos = $mysqli->query("SELECT idDepartament, nom FROM DEPARTAMENT");
+$departamentos = $resultadoDepartamentos->fetch_all(MYSQLI_ASSOC);
 
 // IF PARA CONTROLAR LOS POST DEL FORMULARIO
 $incidenciasFiltradas = [];
 $idTecnicSeleccionado = "";
+$idDepartamentSeleccionado = "";
 
 if (isset($_POST["tipusInforme"])) {
     if($_POST["tipusInforme"] == "informeTecnics") {
@@ -43,6 +45,25 @@ if (isset($_POST["tipusInforme"])) {
         WHERE i.idTecnic = ?");
 
         $sentencia->bind_param("i", $idTecnicSeleccionado);
+        $sentencia->execute();
+
+        $incidenciasFiltradas = $sentencia->get_result()->fetch_all(MYSQLI_ASSOC);
+    } else if ($_POST["tipusInforme"] == "informeDepartamental") {
+        $idDepartamentSeleccionado = $_POST["idDepartament"];
+        
+        $sentencia = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            te.nom AS nomTecnic,
+            t.nom AS nomTipus,
+            i.idTecnic, i.idTipus,
+            i.dataFinalitzacio, i.prioritat
+        FROM INCIDENCIA i
+        LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+        LEFT JOIN TECNIC te ON i.idTecnic = te.idTecnic
+        LEFT JOIN TIPUS t ON i.idTipus = t.idTipus
+        WHERE i.idDepartament = ?");
+
+        $sentencia->bind_param("i", $idDepartamentSeleccionado);
         $sentencia->execute();
 
         $incidenciasFiltradas = $sentencia->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -184,7 +205,46 @@ if (isset($_POST["tipusInforme"])) {
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE CONSUMO POR DEPARTAMENTO ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
     
     <div id="informeDepartamental" class="window-info">
-        <p>Hola</p>   
+         <h3>Informe de consum per departament</h3>
+        <form action="modificarIncidencies.php" method="POST">
+            <input type="hidden" name="tipusInforme" value="informeDepartamental">
+            <select name="idDepartament">
+                <?php foreach ($departamentos as $departamento) { ?>
+                    <option value="<?php echo $departamento["idDepartament"]; ?>"
+                    <?php echo ($departamento["idDepartament"] == $idDepartamentSeleccionado) ? "selected" : ""; ?>>
+                        <?php echo htmlspecialchars($departamento["nom"]); ?>
+                    </option>
+                <?php } ?>
+            </select>
+            <input type="submit" value="Filtrar">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id d'Incidència</th>
+                    <th>Descripció</th>
+                    <th>Data</th>
+                    <th>Tècnic</th>
+                    <th>Tipus</th>
+                    <th>Data Finalització</th>
+                    <th>Prioritat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($incidenciasFiltradas as $incidencia) { ?>
+                    <tr>
+                        <td><?php echo $incidencia["idIncidencia"] ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
+                        <td><?php echo $incidencia["data"] ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["nomTecnic"]) ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["nomTipus"]) ?></td>
+                        <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                        <td><?php echo $incidencia["prioritat"] ?></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table> 
     </div>
 
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE PANEL DE ACCESO---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
