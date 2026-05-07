@@ -71,7 +71,82 @@ if (isset($_POST["tipusInforme"])) {
 }
 
 ?>
+<!-- funcion para filtrar orden -->
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
+    if (isset($_GET["prioritat"])) {
+        $qboton = "prioritat";
+    } elseif (isset($_GET["departament"])) {
+        $qboton = "departament";
+    } elseif (isset($_GET["data"])) {
+        $qboton = "data";
+    } else { 
+        $qboton = null;
+    }
+
+    switch ($qboton) {
+        case 'prioritat':
+            $resultadoIncidencia = $mysqli->query("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            te.nom AS nomTecnic,
+            t.nom AS nomTipus,
+            i.idTecnic, i.idTipus,
+            i.dataFinalitzacio, i.prioritat
+            FROM INCIDENCIA i
+            LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+            LEFT JOIN TECNIC te ON i.idTecnic = te.idTecnic
+            LEFT JOIN TIPUS t ON i.idTipus = t.idTipus
+            ORDER BY CASE 
+                WHEN i.prioritat = 'Alta' THEN 1
+                WHEN i.prioritat = 'Mitja' THEN 2
+                WHEN i.prioritat = 'Baixa' THEN 3
+                ELSE 4
+            END");
+            $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
+            break;
+        
+        case 'departament':
+            $resultadoIncidencia = $mysqli->query("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            te.nom AS nomTecnic,
+            t.nom AS nomTipus,
+            i.idTecnic, i.idTipus,
+            i.dataFinalitzacio, i.prioritat
+            FROM INCIDENCIA i
+            LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+            LEFT JOIN TECNIC te ON i.idTecnic = te.idTecnic
+            LEFT JOIN TIPUS t ON i.idTipus = t.idTipus
+            ORDER BY d.nom ASC");
+            $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
+            break;
+
+        case 'data':
+            $resultadoIncidencia = $mysqli->query("SELECT i.idIncidencia, i.descripcio, i.data,
+            d.nom AS nomDepartament,
+            te.nom AS nomTecnic,
+            t.nom AS nomTipus,
+            i.idTecnic, i.idTipus,
+            i.dataFinalitzacio, i.prioritat
+            FROM INCIDENCIA i
+            LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+            LEFT JOIN TECNIC te ON i.idTecnic = te.idTecnic
+            LEFT JOIN TIPUS t ON i.idTipus = t.idTipus
+            ORDER BY i.data ASC");
+            $incidencias = $resultadoIncidencia->fetch_all(MYSQLI_ASSOC);
+            break;       
+    }
+}
+?>
+
+<form method="GET">
+    <div class="btn-group float-end" role="group" aria-label="Basic outlined example">
+        <button type="submit" name="prioritat" class="btn btn-outline-dark" value="prioritat">Prioritat</button>
+        <button type="submit" name="departament" class="btn btn-outline-dark" value="departament">Departament</button>
+        <button type="submit" name="data" class="btn btn-outline-dark" value="data">Data</button>
+        <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
+    </div>
+</form>
 
 <nav>
     <button id="btn-incidencies" onclick="showWindow('incidencies')">Incidencies</button>
@@ -85,7 +160,7 @@ if (isset($_POST["tipusInforme"])) {
 
     <div id="incidencies" class="window-info active">
         <form action="actualitzar.php" method="POST">
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Id d'Incidència</th>
@@ -100,8 +175,15 @@ if (isset($_POST["tipusInforme"])) {
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($incidencias as $incidencia) { ?>
-                        <tr>
+                    foreach ($incidencias as $incidencia) { 
+                        $prioritat = match($incidencia["prioritat"]) {
+                            'Alta' => 'table-danger',
+                            'Mitja' => 'table-warning',
+                            'Baixa' => 'table-info',
+                            default => 'tabla-light'
+                        };
+                    ?>
+                        <tr class="<?php echo $prioritat?>">
                             <td><?php echo $incidencia["idIncidencia"] ?></td>
                             <td><?php echo $incidencia["descripcio"] ?></td>
                             <td><?php echo $incidencia["data"] ?></td>
