@@ -11,20 +11,48 @@ $actuacions = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $descripcio = $_POST["descripcio"];
-    $temps = $_POST["temps"];
-    $visible = isset($_POST["visible"]) ? 1 : 0;
-    
-    // Insertar la nueva actuación
-    $sentenciaInsert = $mysqli->prepare("INSERT INTO ACTUACIO (idIncidencia, descripcio, temps, visible, data) VALUES (?, ?, ?, ?, NOW())");
-    $sentenciaInsert->bind_param("isii", $idIncidencia, $descripcio, $temps, $visible);
-    
-    if ($sentenciaInsert->execute()) {
-        echo "<div class='alert alert-success'>Actuació afegida correctament.</div>";
-        header("Refresh:0");
-    } else {
-        echo "<div class='alert alert-danger'>Error al afegir l'actuació.</div>";
+
+    $qboton = isset($_POST["afegir"]) ? "afegir" : (isset($_POST["resoldre"]) ? "resoldre" : null);
+
+    switch ($qboton) {
+        case 'afegir':
+            $descripcio = $_POST["descripcio"];
+            $temps = $_POST["temps"];
+            $visible = isset($_POST["visible"]) ? 1 : 0;
+        
+        // Insertar la nova actuació
+            $sentenciaInsert = $mysqli->prepare("INSERT INTO ACTUACIO (idIncidencia, descripcio, temps, visible, data) VALUES (?, ?, ?, ?, NOW())");
+            $sentenciaInsert->bind_param("isii", $idIncidencia, $descripcio, $temps, $visible);
+        
+            if ($sentenciaInsert->execute()) {
+                echo "<div class='alert alert-success'>Actuació afegida correctament.</div>";
+                header("Refresh:1");
+            } else {
+                echo "<div class='alert alert-danger'>Error al afegir l'actuació.</div>";
+            }
+        break;
+        
+        case 'resoldre':
+            $data = date("Y-m-d H:i:s");
+            $descripcio2 = $_POST["descripcio"];
+            $temps2 = $_POST["temps"];
+            $visible2 = 1;
+
+            $sentenciaInsert = $mysqli->prepare("INSERT INTO ACTUACIO (idIncidencia, descripcio, temps, visible, data) VALUES (?, ?, ?, ?, ?)");
+            $sentenciaInsert->bind_param("isiis", $idIncidencia, $descripcio2, $temps2, $visible2, $data);
+
+            $sentenciaUpdate = $mysqli->prepare("UPDATE INCIDENCIA SET dataFinalitzacio = ? WHERE idIncidencia = ?");
+            $sentenciaUpdate->bind_param("si", $data, $idIncidencia);
+
+            if ($sentenciaInsert->execute() && $sentenciaUpdate->execute()) {
+                echo "<div class='alert alert-success'>Incidència tancada correctament.</div>";
+                header("Refresh:1");
+            } else {
+                echo "<div class='alert alert-danger'>Error al tancar l'incidència.</div>";
+            }
+            break;
     }
+       
 }
 ?>
 
@@ -49,13 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Agregar Actuació</button>
+        <button type="submit" name="afegir" class="btn btn-primary">Afegir Actuació</button>
         <br>
-        <button type="submit" name="resuelta" class="btn btn-success m-2">Marcar com a Resolta</button>
+        <button type="submit" name="resoldre" class="btn btn-danger m-2">Tancar Incidència</button>
     </form>
 </div>
-
-
 
 <?php if (!empty($actuacions)) { ?>
 <div class="col-6 mt-5">
@@ -82,6 +108,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p>No hi ha actuacions enregistrades.</p>
 <?php } ?>
 </div>
+</div>
+
+<?php
+$idTecnic = $_GET["idTecnic"];
+?>
+<div class="text-center">
+    <a href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Enrere</a>
 </div>
 
 <?php include_once "footer.php"; ?>

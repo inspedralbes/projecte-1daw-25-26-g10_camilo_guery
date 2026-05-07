@@ -48,7 +48,7 @@ if (!$incidencias) {
                     <td><?php echo $incidencia["nomTipus"] ?></td>
                     <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
                     <td><?php echo $incidencia["prioritat"] ?></td>
-                    <td><a href="actuacioIncidencia.php?idIncidencia=<?php echo $incidencia["idIncidencia"] ?>">Veure</a></td>
+                    <td><a href="actuacioIncidencia.php?idIncidencia=<?php echo $incidencia["idIncidencia"] ?>&idTecnic=<?php echo $idTecnic?>">Veure</a></td>
                 </tr>
             <?php } ?>
         </tbody>
