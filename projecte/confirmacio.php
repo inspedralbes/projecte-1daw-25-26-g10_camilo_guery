@@ -2,21 +2,23 @@
 include_once "header.php";
 ?>
 
-<main>
-    <div>
-        <h3>Incidència Registrada Correctament!</h3>
+<div class="card">
+    <div class="card-header pt-5">
+    </div>
+    <div class="card-body text-center mt-5">
+        <h3 class="card-title">Incidència Registrada Correctament!</h3>
         
         <?php
         if (isset($_GET['id'])) {
             $idIncidencia = $_GET['id'];
-            echo "<p>El ID de la teva incidència es: <strong>" . $idIncidencia . "</strong></p>";
-            echo "<p>Guarda aquest ID per consultar l'estat de la teva incidència més endevant.</p>";
+            echo "<h5>El ID de la teva incidència es: <strong>" . $idIncidencia . "</strong></h5>";
         }
         ?>
-        
-        <a href="persona.php">Tornar Enrere</a>
+        <p class="card-text">Guarda aquest ID per consultar l'estat de la teva incidència més endevant.</p>
+        <br>
+        <a href="persona.php" class="btn btn-primary mb-5">Tornar Enrere</a>
     </div>
-</main>
+</div>
 
 <?php
 include_once "footer.php";

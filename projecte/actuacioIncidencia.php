@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </div>
 
-<?php if (!empty($actuacions)) { ?>
+
 <div class="col-6 mt-5">
     <h3>Historial d'Actuacions</h3>
     <table class="table">
@@ -95,6 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
         </thead>
         <tbody>
+            <?php if (!empty($actuacions)) { ?>
             <?php foreach ($actuacions as $actuacio) { ?>
                 <tr>
                     <td><?php echo $actuacio["data"]; ?></td>
@@ -109,12 +110,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php } ?>
 </div>
 </div>
-
 <?php
 $idTecnic = $_GET["idTecnic"];
 ?>
-<div class="text-center">
-    <a href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Enrere</a>
+<div class="position-fixed bottom-0 start-0 end-0 d-flex justify-content-center p-3">
+    <a class="btn btn-danger mb-5" href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Enrere</a>
 </div>
+
+
 
 <?php include_once "footer.php"; ?>
