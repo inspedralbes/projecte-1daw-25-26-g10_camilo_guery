@@ -24,7 +24,8 @@ $resultadoDepartamentos = $mysqli->query("SELECT idDepartament, nom FROM DEPARTA
 $departamentos = $resultadoDepartamentos->fetch_all(MYSQLI_ASSOC);
 
 // IF PARA CONTROLAR LOS POST DEL FORMULARIO
-$incidenciasFiltradas = [];
+$incidenciasTecnicos = [];
+$incidenciasDepartamentos = [];
 $idTecnicSeleccionado = "";
 $idDepartamentSeleccionado = "";
 
@@ -47,7 +48,7 @@ if (isset($_POST["tipusInforme"])) {
         $sentencia->bind_param("i", $idTecnicSeleccionado);
         $sentencia->execute();
 
-        $incidenciasFiltradas = $sentencia->get_result()->fetch_all(MYSQLI_ASSOC);
+        $incidenciasTecnicos = $sentencia->get_result()->fetch_all(MYSQLI_ASSOC);
     } else if ($_POST["tipusInforme"] == "informeDepartamental") {
         $idDepartamentSeleccionado = $_POST["idDepartament"];
         
@@ -66,7 +67,7 @@ if (isset($_POST["tipusInforme"])) {
         $sentencia->bind_param("i", $idDepartamentSeleccionado);
         $sentencia->execute();
 
-        $incidenciasFiltradas = $sentencia->get_result()->fetch_all(MYSQLI_ASSOC);
+        $incidenciasDepartamentos = $sentencia->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 }
 
@@ -144,7 +145,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <button type="submit" name="prioritat" class="btn btn-outline-dark" value="prioritat">Prioritat</button>
         <button type="submit" name="departament" class="btn btn-outline-dark" value="departament">Departament</button>
         <button type="submit" name="data" class="btn btn-outline-dark" value="data">Data</button>
-        <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
     </div>
 </form>
 
@@ -269,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             </thead>
             <tbody>
             <?php
-            foreach ($incidenciasFiltradas as $incidencia) { 
+            foreach ($incidenciasTecnicos as $incidencia) { 
 
                 $prioritat = match($incidencia["prioritat"]) {
                     'Alta' => 'table-danger',
@@ -283,9 +283,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
                     <td><?php echo $incidencia["data"] ?></td>
                     <td><?php echo htmlspecialchars($incidencia["nomDepartament"]) ?></td>
-                    <td><?php echo htmlspecialchars($incidencia["nomTipus"]) ?></td>
+                    <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
                     <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                    <td><?php echo $incidencia["prioritat"] ?></td>
+                    <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -322,7 +322,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             </thead>
             <tbody>
                 <?php
-                foreach ($incidenciasFiltradas as $incidencia) { 
+                foreach ($incidenciasDepartamentos as $incidencia) { 
 
                     $prioritat = match($incidencia["prioritat"]) {
                         'Alta' => 'table-danger',
@@ -335,10 +335,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         <td><?php echo $incidencia["idIncidencia"] ?></td>
                         <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
                         <td><?php echo $incidencia["data"] ?></td>
-                        <td><?php echo htmlspecialchars($incidencia["nomTecnic"]) ?></td>
-                        <td><?php echo htmlspecialchars($incidencia["nomTipus"]) ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["nomTecnic"] ?? "Sin asignar") ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
                         <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                        <td><?php echo $incidencia["prioritat"] ?></td>
+                        <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
