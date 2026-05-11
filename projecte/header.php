@@ -24,3 +24,4 @@ error_reporting(E_ALL);
             </h3>
         </div>
     </header>
+<main>

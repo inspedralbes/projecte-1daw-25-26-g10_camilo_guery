@@ -154,10 +154,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <button id="btn-informeDepartamental" onclick="showWindow('informeDepartamental')">Informe Departamental</button>
     <button id="btn-informeAcceso" onclick="showWindow('informeAcceso')">Panel d'Accés</button>
 </nav>
-<main class="container">
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE MODIFICAR INCIDENCIAS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
+<div class="container">
     <div id="incidencies" class="window-info active">
         <form action="actualitzar.php" method="POST">
             <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
@@ -358,7 +357,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 
     <a class="btn btn-primary mt-3" href="index.php">Tornar enrere</a>
-</main>
+</div>
 <script>
 
 </script>

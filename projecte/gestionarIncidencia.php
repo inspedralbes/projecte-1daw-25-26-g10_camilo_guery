@@ -2,6 +2,7 @@
 include_once "header.php";
 $mysqli = include_once "conexio.php";
 $idIncidencia = $_GET["idIncidencia"];
+$idTecnic = $_GET["idTecnic"];
 $idIncidencia = (int)$idIncidencia;
 $resultado = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data, i.dataFinalitzacio, i.prioritat,
     d.nom AS nomDepartament, 
@@ -28,6 +29,10 @@ $result = $sentencia->get_result();
 $actuacions = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
+<?php if (empty($incidencias)) { ?>
+    <p class="alert alert-danger">No s'ha trobat incidència amb aquest ID.</p>
+<?php } else { ?>
+
 <?php
 foreach ($incidencias as $incidencia) {
 $prioritat = match($incidencia["prioritat"]) {
@@ -37,91 +42,90 @@ $prioritat = match($incidencia["prioritat"]) {
     default => 'bg-light'
 };
 ?>
+<div class="container pb-5">
+    <div class="container mt-5 mb-5">
+        <h3 class="text-center">Incidència amb ID:</h3>
+        <h4 class="text-center text-muted"><?php echo $incidencia["idIncidencia"]; ?></h4>
+        
+        <div class="card" style="max-width: 350px; margin: 20px auto;">
 
-<div class="container mt-5 mb-5">
-    <h3 class="text-center">Incidència amb ID:</h3>
-    <h4 class="text-center text-muted"><?php echo $incidencia["idIncidencia"]; ?></h4>
-    
-    <div class="card" style="max-width: 350px; margin: 20px auto;">
+            <div class="card-header <?php echo $prioritat; ?>">
+            </div>
 
-        <div class="card-header <?php echo $prioritat; ?>">
-        </div>
+            <div class="card-body">
+                
+                <p>
+                    <strong>Departament:</strong> 
+                    <?php echo $incidencia["nomDepartament"]; ?>
+                </p>
 
-        <div class="card-body">
-            
-            <p>
-                <strong>Departament:</strong> 
-                <?php echo $incidencia["nomDepartament"]; ?>
-            </p>
+                <p>
+                    <strong>Descripció:</strong> 
+                    <?php echo $incidencia["descripcio"]; ?>
+                </p>
 
-            <p>
-                <strong>Descripció:</strong> 
-                <?php echo $incidencia["descripcio"]; ?>
-            </p>
+                <p>
+                    <strong>Data:</strong> 
+                    <?php echo $incidencia["data"]; ?>
+                </p>
 
-            <p>
-                <strong>Data:</strong> 
-                <?php echo $incidencia["data"]; ?>
-            </p>
+                <p>
+                    <strong>Tècnic:</strong> 
+                    <?php echo $incidencia["nomTecnic"] ?? "No assignat"; ?>
+                </p>
 
-            <p>
-                <strong>Tècnic:</strong> 
-                <?php echo $incidencia["nomTecnic"] ?? "No assignat"; ?>
-            </p>
+                <p>
+                    <strong>Tipus:</strong> 
+                    <?php echo $incidencia["nomTipus"] ?? "No assignat"; ?>
+                </p>
 
-            <p>
-                <strong>Tipus:</strong> 
-                <?php echo $incidencia["nomTipus"] ?? "No assignat"; ?>
-            </p>
+                <p>
+                    <strong>Data Finalització:</strong> 
+                    <?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzat"; ?>
+                </p>
 
-            <p>
-                <strong>Data Finalització:</strong> 
-                <?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzat"; ?>
-            </p>
+                <p>
+                    <strong>Prioritat:</strong> 
+                    <?php echo $incidencia["prioritat"] ?? "No assignada"; ?>
+                </p>
 
-            <p>
-                <strong>Prioritat:</strong> 
-                <?php echo $incidencia["prioritat"] ?? "No assignada"; ?>
-            </p>
-
+            </div>
         </div>
     </div>
-</div>
-<?php
-};
-?>
+    <?php
+    };
+    ?>
 
-<?php if (!empty($actuacions)) { ?>
-<div class="">
-    <h3 class="text-center">Historial d'Actuacions</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Descripció</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($actuacions as $actuacio) { ?>
+    <?php if (!empty($actuacions)) { ?>
+    <div class="">
+        <h3 class="text-center">Historial d'Actuacions</h3>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td><?php echo $actuacio["data"]; ?></td>
-                    <td><?php echo $actuacio["descripcio"]; ?></td>
+                    <th>Data</th>
+                    <th>Descripció</th>
+                    <th></th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
-<?php } else { ?>
-    <p class="text-center">No hi ha actuacions enregistrades.</p>
-<?php } ?>
-</div>
+            </thead>
+            <tbody>
+                <?php foreach ($actuacions as $actuacio) { ?>
+                    <tr>
+                        <td><?php echo $actuacio["data"]; ?></td>
+                        <td><?php echo $actuacio["descripcio"]; ?></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    <?php } else { ?>
+        <p class="text-center">No hi ha actuacions enregistrades.</p>
+    <?php } ?>
+    </div>
+    <?php }; ?>
 
-<?php
-$idTecnic = $_GET["idTecnic"];
-?>
-<div class="text-center">
-    <a class="btn btn-primary mb-4" href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Tornar Enrere</a>
+    <div class="text-center mb-4 mt-2">
+        <a class="btn btn-primary" href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Tornar Enrere</a>
+    </div>
 </div>
-<?php
+<?php 
 include_once "footer.php";
 ?>

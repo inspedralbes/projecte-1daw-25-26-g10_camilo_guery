@@ -37,87 +37,88 @@ foreach ($incidencias as $incidencia) {
     default => 'bg-light'
 };
 ?>
-<div class="container mt-5 mb-5">
-    <h3 class="text-center">Incidència amb ID:</h3>
-    <h4 class="text-center text-muted"><?php echo $incidencia["idIncidencia"]; ?></h4>
-    
-    <div class="card" style="max-width: 350px; margin: 20px auto;">
+<div class="container pb-5">
+    <div class="container mt-5 mb-5">
+        <h3 class="text-center">Incidència amb ID:</h3>
+        <h4 class="text-center text-muted"><?php echo $incidencia["idIncidencia"]; ?></h4>
+        
+        <div class="card" style="max-width: 350px; margin: 20px auto;">
 
-        <div class="card-header <?php echo $prioritat; ?>">
-        </div>
+            <div class="card-header <?php echo $prioritat; ?>">
+            </div>
 
-        <div class="card-body">
-            
-            <p>
-                <strong>Departament:</strong> 
-                <?php echo $incidencia["nomDepartament"]; ?>
-            </p>
+            <div class="card-body">
+                
+                <p>
+                    <strong>Departament:</strong> 
+                    <?php echo $incidencia["nomDepartament"]; ?>
+                </p>
 
-            <p>
-                <strong>Descripció:</strong> 
-                <?php echo $incidencia["descripcio"]; ?>
-            </p>
+                <p>
+                    <strong>Descripció:</strong> 
+                    <?php echo $incidencia["descripcio"]; ?>
+                </p>
 
-            <p>
-                <strong>Data:</strong> 
-                <?php echo $incidencia["data"]; ?>
-            </p>
+                <p>
+                    <strong>Data:</strong> 
+                    <?php echo $incidencia["data"]; ?>
+                </p>
 
-            <p>
-                <strong>Tècnic:</strong> 
-                <?php echo $incidencia["nomTecnic"] ?? "No assignat"; ?>
-            </p>
+                <p>
+                    <strong>Tècnic:</strong> 
+                    <?php echo $incidencia["nomTecnic"] ?? "No assignat"; ?>
+                </p>
 
-            <p>
-                <strong>Tipus:</strong> 
-                <?php echo $incidencia["nomTipus"] ?? "No assignat"; ?>
-            </p>
+                <p>
+                    <strong>Tipus:</strong> 
+                    <?php echo $incidencia["nomTipus"] ?? "No assignat"; ?>
+                </p>
 
-            <p>
-                <strong>Data Finalització:</strong> 
-                <?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzat"; ?>
-            </p>
+                <p>
+                    <strong>Data Finalització:</strong> 
+                    <?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzat"; ?>
+                </p>
 
-            <p>
-                <strong>Prioritat:</strong> 
-                <?php echo $incidencia["prioritat"] ?? "No assignada"; ?>
-            </p>
+                <p>
+                    <strong>Prioritat:</strong> 
+                    <?php echo $incidencia["prioritat"] ?? "No assignada"; ?>
+                </p>
 
+            </div>
         </div>
     </div>
-</div>
-<?php
-};
-?>
+    <?php
+    };
+    ?>
 
 
-<?php if (!empty($actuacions)) { ?>
-<div>
-    <h3 class="text-center">Historial d'Actuacions</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Descripció</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($actuacions as $actuacio) { ?>
+    <?php if (!empty($actuacions)) { ?>
+    <div>
+        <h3 class="text-center">Historial d'Actuacions</h3>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td><?php echo $actuacio["data"]; ?></td>
-                    <td><?php echo $actuacio["descripcio"]; ?></td>
+                    <th>Data</th>
+                    <th>Descripció</th>
+                    <th></th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
-<?php } else { ?>
-    <p class="text-center">No hi ha actuacions enregistrades.</p>
-<?php } ?>
-</div>
+            </thead>
+            <tbody>
+                <?php foreach ($actuacions as $actuacio) { ?>
+                    <tr>
+                        <td><?php echo $actuacio["data"]; ?></td>
+                        <td><?php echo $actuacio["descripcio"]; ?></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    <?php } else { ?>
+        <p class="text-center">No hi ha actuacions enregistrades.</p>
+    <?php } ?>
+    </div>
 
-<div class="text-center mb-4">
-    <a href="persona.php" class="btn btn-primary">Tornar Enrere</a>
+    <div class="text-center mb-4 mt-2">
+        <a href="persona.php" class="btn btn-primary">Tornar Enrere</a>
+    </div>
 </div>
-
 <?php include_once "footer.php"; ?>

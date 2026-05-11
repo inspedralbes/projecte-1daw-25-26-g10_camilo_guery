@@ -9,6 +9,24 @@ $sentencia->execute();
 $result = $sentencia->get_result();
 $actuacions = $result->fetch_all(MYSQLI_ASSOC);
 ?>
+
+<?php
+$sentencia2 = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
+       d.nom AS nomDepartament,
+       t.nom AS nomTipus,
+       i.dataFinalitzacio, i.prioritat
+FROM INCIDENCIA i
+LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+LEFT JOIN TIPUS t ON i.idTipus = t.idTipus
+WHERE i.idIncidencia = ?");
+
+$sentencia2->bind_param("i", $idIncidencia);
+$sentencia2->execute();
+
+$resultado = $sentencia2->get_result();
+$incidencias = $resultado->fetch_all(MYSQLI_ASSOC);
+?>
+
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -56,8 +74,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Descripció</th>
+            <th>Data</th>
+            <th>Departament</th>
+            <th>Tipus</th>
+            <th>Data Finalització</th>
+            <th>Prioritat</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+        foreach ($incidencias as $incidencia) { 
+            $prioritat = match($incidencia["prioritat"]) {
+                'Alta' => 'table-danger',
+                'Mitja' => 'table-warning',
+                'Baixa' => 'table-info',
+                default => 'tabla-light'
+            };
+?>
+                <tr class="<?php echo $prioritat?>">
+                    <td><?php echo $incidencia["idIncidencia"] ?></td>
+                    <td><?php echo $incidencia["descripcio"] ?></td>
+                    <td><?php echo $incidencia["data"] ?></td>
+                    <td><?php echo $incidencia["nomDepartament"] ?></td>
+                    <td><?php echo $incidencia["nomTipus"] ?></td>
+                    <td><?php echo $incidencia["dataFinalitzacio"] ?? "No Finalitzada"  ?></td>
+                    <td><?php echo $incidencia["prioritat"] ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+
 <div class="container justify-content-center row">
-<div class="col-6 mt-5 text-center">
+<div class="col-6 mt-3 px-5 text-center">
     <h3>Afegir Actuació</h3>
     <form method="POST">
         <div class="mb-3">
@@ -84,18 +137,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 
-<div class="col-6 mt-5">
+<div class="col-6 mt-3">
     <h3>Historial d'Actuacions</h3>
-    <table class="table">
+    <?php if (!empty($actuacions)) { ?>
+    <table class="table" style="table-layout: fixed; width: 100%;">
         <thead>
             <tr>
-                <th>Data</th>
-                <th>Descripció</th>
-                <th>Temps (minuts)</th>
+                <th style="width: 15%;">Data</th>
+                <th style="width: 70%;">Descripció</th>
+                <th style="width: 15%;">Temps (minuts)</th>
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($actuacions)) { ?>
             <?php foreach ($actuacions as $actuacio) { ?>
                 <tr>
                     <td><?php echo $actuacio["data"]; ?></td>
@@ -113,10 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php
 $idTecnic = $_GET["idTecnic"];
 ?>
-<div class="position-fixed bottom-0 start-0 end-0 d-flex justify-content-center p-3">
+<div class="d-flex justify-content-center p-5">
     <a class="btn btn-primary mb-5" href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Tornar Enrere</a>
 </div>
-
 
 
 <?php include_once "footer.php"; ?>

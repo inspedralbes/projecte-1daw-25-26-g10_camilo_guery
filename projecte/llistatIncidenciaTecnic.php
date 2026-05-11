@@ -7,8 +7,8 @@ $sentencia = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
        t.nom AS nomTipus,
        i.dataFinalitzacio, i.prioritat
 FROM INCIDENCIA i
-JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
-JOIN TIPUS t ON i.idTipus = t.idTipus
+LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+LEFT JOIN TIPUS t ON i.idTipus = t.idTipus
 WHERE i.idTecnic = ?");
 
 $sentencia->bind_param("i", $idTecnic);
@@ -160,16 +160,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <td><?php echo $incidencia["data"] ?></td>
                     <td><?php echo $incidencia["nomDepartament"] ?></td>
                     <td><?php echo $incidencia["nomTipus"] ?></td>
-                    <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                    <td><?php echo $incidencia["dataFinalitzacio"] ?? "No Finalitzada" ?></td>
                     <td><?php echo $incidencia["prioritat"] ?></td>
-                    <td><a href="actuacioIncidencia.php?idIncidencia=<?php echo $incidencia["idIncidencia"] ?>&idTecnic=<?php echo $idTecnic?>">Veure</a></td>
+                    <td><a class="btn btn-success btn-sm" href="actuacioIncidencia.php?idIncidencia=<?php echo $incidencia["idIncidencia"] ?>&idTecnic=<?php echo $idTecnic?>">Veure</a></td>
                 </tr>
             <?php } ?>
         </tbody>
     </table>
 
 <form method="GET" action="gestionarIncidencia.php">
-  <div class="input-group mt-2">
+  <div class="input-group mt-2 px-4">
     <span class="input-group-text">ID</span>
     <div class="form-floating">
       <input type="text" class="form-control" id="buscarId" name="idIncidencia" placeholder="Buscar">
