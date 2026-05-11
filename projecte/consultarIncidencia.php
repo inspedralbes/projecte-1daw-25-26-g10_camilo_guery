@@ -8,9 +8,9 @@ $resultado = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data, i.da
     t.nom AS nomTecnic, 
     p.nom AS nomTipus  
 FROM INCIDENCIA i 
-JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
-JOIN TECNIC t ON i.idTecnic = t.idTecnic
-JOIN TIPUS p ON i.idTipus = p.idTipus
+LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+LEFT JOIN TECNIC t ON i.idTecnic = t.idTecnic
+LEFT JOIN TIPUS p ON i.idTipus = p.idTipus
 WHERE idIncidencia = ?");
 
 $resultado->bind_param("i", $idIncidencia);
@@ -28,40 +28,72 @@ $result = $sentencia->get_result();
 $actuacions = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
-<table class="table">
-            <thead>
-                <tr>
-                    <th>Id d'Incidencia</th>
-                    <th>Descripcio</th>
-                    <th>Data</th>
-                    <th>Departament</th>
-                    <th>Tecnic</th>
-                    <th>Tipo</th>
-                    <th>Data Finalitzacio</th>
-                    <th>Prioritat</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($incidencias as $incidencia) { ?>
-                    <tr>
-                        <td><?php echo $incidencia["idIncidencia"] ?></td>
-                        <td><?php echo $incidencia["descripcio"] ?></td>
-                        <td><?php echo $incidencia["data"] ?></td>
-                        <td><?php echo $incidencia["nomDepartament"] ?></td>
-                        <td><?php echo $incidencia["nomTecnic"] ?></td>
-                        <td><?php echo $incidencia["nomTipus"] ?></td>
-                        <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                        <td><?php echo $incidencia["prioritat"] ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+<?php
+foreach ($incidencias as $incidencia) {
+    $prioritat = match($incidencia["prioritat"]) {
+    'Alta' => 'bg-danger',
+    'Mitja' => 'bg-warning',
+    'Baixa' => 'bg-info',
+    default => 'bg-light'
+};
+?>
+<div class="container mt-5 mb-5">
+    <h3 class="text-center">Incidència amb ID:</h3>
+    <h4 class="text-center text-muted"><?php echo $incidencia["idIncidencia"]; ?></h4>
+    
+    <div class="card" style="max-width: 350px; margin: 20px auto;">
+
+        <div class="card-header <?php echo $prioritat; ?>">
+        </div>
+
+        <div class="card-body">
+            
+            <p>
+                <strong>Departament:</strong> 
+                <?php echo $incidencia["nomDepartament"]; ?>
+            </p>
+
+            <p>
+                <strong>Descripció:</strong> 
+                <?php echo $incidencia["descripcio"]; ?>
+            </p>
+
+            <p>
+                <strong>Data:</strong> 
+                <?php echo $incidencia["data"]; ?>
+            </p>
+
+            <p>
+                <strong>Tècnic:</strong> 
+                <?php echo $incidencia["nomTecnic"] ?? "No assignat"; ?>
+            </p>
+
+            <p>
+                <strong>Tipus:</strong> 
+                <?php echo $incidencia["nomTipus"] ?? "No assignat"; ?>
+            </p>
+
+            <p>
+                <strong>Data Finalització:</strong> 
+                <?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzat"; ?>
+            </p>
+
+            <p>
+                <strong>Prioritat:</strong> 
+                <?php echo $incidencia["prioritat"] ?? "No assignada"; ?>
+            </p>
+
+        </div>
+    </div>
+</div>
+<?php
+};
+?>
 
 
 <?php if (!empty($actuacions)) { ?>
 <div>
-    <h3>Historial d'Actuacions</h3>
+    <h3 class="text-center">Historial d'Actuacions</h3>
     <table class="table">
         <thead>
             <tr>
@@ -80,10 +112,12 @@ $actuacions = $result->fetch_all(MYSQLI_ASSOC);
         </tbody>
     </table>
 <?php } else { ?>
-    <p>No hi ha actuacions enregistrades.</p>
+    <p class="text-center">No hi ha actuacions enregistrades.</p>
 <?php } ?>
 </div>
 
-<a class="" href="index.php">Volver</a>
+<div class="text-center mb-4">
+    <a href="persona.php" class="btn btn-primary">Tornar Enrere</a>
+</div>
 
 <?php include_once "footer.php"; ?>

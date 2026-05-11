@@ -8,9 +8,9 @@ $resultado = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data, i.da
     t.nom AS nomTecnic, 
     p.nom AS nomTipus  
 FROM INCIDENCIA i 
-JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
-JOIN TECNIC t ON i.idTecnic = t.idTecnic
-JOIN TIPUS p ON i.idTipus = p.idTipus
+LEFT JOIN DEPARTAMENT d ON i.idDepartament = d.idDepartament
+LEFT JOIN TECNIC t ON i.idTecnic = t.idTecnic
+LEFT JOIN TIPUS p ON i.idTipus = p.idTipus
 WHERE idIncidencia = ?");
 
 $resultado->bind_param("i", $idIncidencia);
@@ -19,46 +19,108 @@ $resultado->execute();
 $resultadoQuery = $resultado->get_result();
 $incidencias = $resultadoQuery->fetch_all(MYSQLI_ASSOC);
 ?>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id d'Incidencia</th>
-            <th>Descripcio</th>
-            <th>Data</th>
-            <th>Departament</th>
-            <th>Tecnic</th>
-            <th>Tipo</th>
-            <th>Data Finalitzacio</th>
-            <th>Prioritat</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if (empty($incidencias)) {
-            echo "<div class='alert alert-danger'>Incidència no trobada</div>";
-            include_once "footer.php";
-            exit;
-        }
-        $incidencia = $incidencias[0];
-        ?>
-        <tr>
-            <td><?php echo $incidencia["idIncidencia"] ?></td>
-            <td><?php echo $incidencia["descripcio"] ?></td>
-            <td><?php echo $incidencia["data"] ?></td>
-            <td><?php echo $incidencia["nomDepartament"] ?></td>
-            <td><?php echo $incidencia["nomTecnic"] ?></td>
-            <td><?php echo $incidencia["nomTipus"] ?></td>
-            <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-            <td><?php echo $incidencia["prioritat"] ?></td>
-        </tr>
-    </tbody>
-</table>
+
+<?php
+$sentencia = $mysqli->prepare("SELECT descripcio, data, visible, idIncidencia FROM ACTUACIO WHERE idIncidencia = ? AND visible = 1");
+$sentencia->bind_param("i", $idIncidencia);
+$sentencia->execute();
+$result = $sentencia->get_result();
+$actuacions = $result->fetch_all(MYSQLI_ASSOC);
+?>
+
+<?php
+foreach ($incidencias as $incidencia) {
+$prioritat = match($incidencia["prioritat"]) {
+    'Alta' => 'bg-danger',
+    'Mitja' => 'bg-warning',
+    'Baixa' => 'bg-info',
+    default => 'bg-light'
+};
+?>
+
+<div class="container mt-5 mb-5">
+    <h3 class="text-center">Incidència amb ID:</h3>
+    <h4 class="text-center text-muted"><?php echo $incidencia["idIncidencia"]; ?></h4>
+    
+    <div class="card" style="max-width: 350px; margin: 20px auto;">
+
+        <div class="card-header <?php echo $prioritat; ?>">
+        </div>
+
+        <div class="card-body">
+            
+            <p>
+                <strong>Departament:</strong> 
+                <?php echo $incidencia["nomDepartament"]; ?>
+            </p>
+
+            <p>
+                <strong>Descripció:</strong> 
+                <?php echo $incidencia["descripcio"]; ?>
+            </p>
+
+            <p>
+                <strong>Data:</strong> 
+                <?php echo $incidencia["data"]; ?>
+            </p>
+
+            <p>
+                <strong>Tècnic:</strong> 
+                <?php echo $incidencia["nomTecnic"] ?? "No assignat"; ?>
+            </p>
+
+            <p>
+                <strong>Tipus:</strong> 
+                <?php echo $incidencia["nomTipus"] ?? "No assignat"; ?>
+            </p>
+
+            <p>
+                <strong>Data Finalització:</strong> 
+                <?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzat"; ?>
+            </p>
+
+            <p>
+                <strong>Prioritat:</strong> 
+                <?php echo $incidencia["prioritat"] ?? "No assignada"; ?>
+            </p>
+
+        </div>
+    </div>
+</div>
+<?php
+};
+?>
+
+<?php if (!empty($actuacions)) { ?>
+<div class="">
+    <h3 class="text-center">Historial d'Actuacions</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Descripció</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($actuacions as $actuacio) { ?>
+                <tr>
+                    <td><?php echo $actuacio["data"]; ?></td>
+                    <td><?php echo $actuacio["descripcio"]; ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+<?php } else { ?>
+    <p class="text-center">No hi ha actuacions enregistrades.</p>
+<?php } ?>
+</div>
 
 <?php
 $idTecnic = $_GET["idTecnic"];
 ?>
 <div class="text-center">
-    <a href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Enrere</a>
+    <a class="btn btn-primary mb-4" href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Tornar Enrere</a>
 </div>
 <?php
 include_once "footer.php";

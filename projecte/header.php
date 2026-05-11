@@ -16,7 +16,7 @@ error_reporting(E_ALL);
     <script src="js/script.js"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header class="px-3 py-3 bg-dark">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <h3>

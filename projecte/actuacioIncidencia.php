@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </label>
         </div>
 
-        <button type="submit" name="afegir" class="btn btn-primary">Afegir Actuació</button>
+        <button type="submit" name="afegir" class="btn btn-success">Afegir Actuació</button>
         <br>
         <button type="submit" name="resoldre" class="btn btn-danger m-2">Tancar Incidència</button>
     </form>
@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $idTecnic = $_GET["idTecnic"];
 ?>
 <div class="position-fixed bottom-0 start-0 end-0 d-flex justify-content-center p-3">
-    <a class="btn btn-danger mb-5" href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Enrere</a>
+    <a class="btn btn-primary mb-5" href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $idTecnic ?>">Tornar Enrere</a>
 </div>
 
 

@@ -18,7 +18,23 @@ $result = $sentencia->get_result();
 $incidencias = $result->fetch_all(MYSQLI_ASSOC);
 # Obtenemos solo una fila, que será el videojuego a editar
 if (!$incidencias) {
-    echo "No hi ha incidències per a aquest tècnic.";
+    ?>
+    <div class="container mt-5">
+        <p class="text-center">No hi ha incidències per a aquest tècnic.</p>
+        
+        <form method="GET" action="gestionarIncidencia.php">
+            <div class="input-group mt-2">
+                <span class="input-group-text">ID</span>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="buscarId" name="idIncidencia" placeholder="Buscar">
+                    <label for="buscarId">Buscar per ID</label>
+                </div>
+                <input type="hidden" name="idTecnic" value="<?php echo $idTecnic; ?>">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
+    </div>
+    <?php
     include_once "footer.php";
     exit;
 }
