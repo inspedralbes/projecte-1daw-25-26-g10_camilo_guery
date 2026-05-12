@@ -357,6 +357,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 
     <a class="btn btn-primary mt-3" href="index.php">Tornar enrere</a>
+    
+    <div style="position: fixed; bottom: 200px; right: 50px;">
+        <a class="btn btn-warning mt-3" href="incidenciesPendents.php">Incidències Pendents</a>
+    </div>
+
 </div>
 <script>
 
