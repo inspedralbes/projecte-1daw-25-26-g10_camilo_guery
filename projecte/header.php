@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,8 @@ error_reporting(E_ALL);
                 <a href="index.php" class="text-white text-decoration-none"><?= $titulo ?? "Gestor d'Incidències" ?></a>
             </h3>
             <a href="index.php" class="text-white text-decoration-none">
-                <i class="fa fa-home text-white fs-2"></i>
+                <i class="fa fa-home text-white fs-3"></i>
+                Inici
             </a>
         </div>
     </header>

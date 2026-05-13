@@ -12,15 +12,15 @@ $departaments = $resultadoDepartaments->fetch_all(MYSQLI_ASSOC);
             <em class="text-danger d-block"><sup>*</sup>Camps obligatoris</em>
             <form action="registrar.php" method="POST">
                 <label for="idDepartament">Departament: <sup class="text-danger">*</sup></label>
-                <select class="form-select" for="idDepartament" name="idDepartament" id="idDepartament" aria-label="Departament" required>
-                    <option selected hidden>Tria un: </option>
+                <select class="form-select" for="idDepartament" name="idDepartament" id="idDepartament" required>
+                    <option value="" selected hidden>Tria un: </option>
                     <?php foreach ($departaments as $departament) { ?>
                         <option value="<?php echo $departament["idDepartament"] ?>"><?php echo $departament["nom"]; ?></option>
                     <?php } ?>
                 </select>
                 <br>
                 <label for="descripcio">Descripció: <sup class="text-danger">*</sup></label>
-                <textarea class="form-control" name="descripcio" id="descripcio" placeholder="Descripció de l'incidència" rows="3" aria-label="Descripció"></textarea>
+                <textarea class="form-control" name="descripcio" id="descripcio" placeholder="Descripció de l'incidència" rows="3" required></textarea>
                 <br>
                 <input class="btn btn-success" type="submit" value="Enviar">
             </form>
@@ -32,7 +32,7 @@ $departaments = $resultadoDepartaments->fetch_all(MYSQLI_ASSOC);
             <form action="consultarIncidencia.php" method="POST">
                 <div class="input-group mt-2">
                     <label class="input-group-text" for="idIncidencia">ID</label>
-                    <input type="text" class="form-control" name="idIncidencia" id="idIncidencia" placeholder="ID d'Incidencia: " aria-label="Id d'Incidencia">
+                    <input type="text" class="form-control" name="idIncidencia" id="idIncidencia" placeholder="ID d'Incidencia: ">
                 </div>
                 <br>
                 <button type="submit" value="Enviar" class="btn btn-primary">Buscar</button>
