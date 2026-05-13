@@ -1,5 +1,4 @@
 <?php
-include_once "header.php";
 $mysqli = include_once "conexio.php";
 $idTecnic = $_GET["idTecnic"];
 $sentencia = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
@@ -16,7 +15,17 @@ $sentencia->execute();
 
 $result = $sentencia->get_result();
 $incidencias = $result->fetch_all(MYSQLI_ASSOC);
-# Obtenemos solo una fila, que será el videojuego a editar
+
+$sentencia2 = $mysqli->prepare("SELECT nom FROM TECNIC WHERE idTecnic = ?");
+$sentencia2->bind_param("i", $idTecnic);
+$sentencia2->execute();
+$result2 = $sentencia2->get_result();
+$tecnico = $result2->fetch_assoc();
+
+$titulo = "Llistat d'Incidències" . " - " . $tecnico["nom"];
+
+include_once "header.php";
+
 if (!$incidencias) {
     ?>
     <div class="container mt-5">
