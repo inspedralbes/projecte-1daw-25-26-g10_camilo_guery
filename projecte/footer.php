@@ -1,5 +1,5 @@
 </main>
-<footer class="px-2 py-2 fixed-bottom mt-auto bg-dark">
+<footer class="px-2 py-2 mt-auto bg-dark text-white">
         <figure class="text-center">
             <span class="text-white">
                 Aplicació per la Gestió d'Incidències Informàtiques creat per DAW1PJ10
