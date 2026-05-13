@@ -1,4 +1,5 @@
 <?php
+$titulo = "Gestor d'Incidències - Actuacions de la Incidència";
 include_once "header.php";
 $mysqli = include_once "conexio.php";
 $idIncidencia = $_GET["idIncidencia"];
@@ -73,21 +74,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
        
 }
 ?>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Descripció</th>
-            <th>Data</th>
-            <th>Departament</th>
-            <th>Tipus</th>
-            <th>Data Finalització</th>
-            <th>Prioritat</th>
-        </tr>
-    </thead>
-    <tbody>
-<?php
+<div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Descripció</th>
+                <th>Data</th>
+                <th>Departament</th>
+                <th>Tipus</th>
+                <th>Data Finalització</th>
+                <th>Prioritat</th>
+            </tr>
+        </thead>
+        <tbody>
+    <?php
         foreach ($incidencias as $incidencia) { 
             $prioritat = match($incidencia["prioritat"]) {
                 'Alta' => 'table-danger',
@@ -95,20 +96,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'Baixa' => 'table-info',
                 default => 'tabla-light'
             };
-?>
-                <tr class="<?php echo $prioritat?>">
-                    <td><?php echo $incidencia["idIncidencia"] ?></td>
-                    <td><?php echo $incidencia["descripcio"] ?></td>
-                    <td><?php echo $incidencia["data"] ?></td>
-                    <td><?php echo $incidencia["nomDepartament"] ?></td>
-                    <td><?php echo $incidencia["nomTipus"] ?></td>
-                    <td><?php echo $incidencia["dataFinalitzacio"] ?? "No Finalitzada"  ?></td>
-                    <td><?php echo $incidencia["prioritat"] ?></td>
-                </tr>
-            <?php } ?>
+    ?>
+            <tr class="<?php echo $prioritat?>">
+                <td><?php echo $incidencia["idIncidencia"] ?></td>
+                <td><?php echo $incidencia["descripcio"] ?></td>
+                <td><?php echo $incidencia["data"] ?></td>
+                <td><?php echo $incidencia["nomDepartament"] ?></td>
+                <td><?php echo $incidencia["nomTipus"] ?></td>
+                <td><?php echo $incidencia["dataFinalitzacio"] ?? "No Finalitzada"  ?></td>
+                <td><?php echo $incidencia["prioritat"] ?></td>
+            </tr>
+    <?php } ?>
         </tbody>
     </table>
-
+</div>
 <div class="container justify-content-center row">
 <div class="col-6 mt-3 px-5 text-center">
     <h3>Afegir Actuació</h3>

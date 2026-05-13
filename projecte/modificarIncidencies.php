@@ -140,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 ?>
 
-<form method="GET">
+<form method="GET" class="mt-3" >
     <div class="btn-group float-end" role="group" aria-label="Basic outlined example">
         <button type="submit" name="prioritat" class="btn btn-outline-dark" value="prioritat">Prioritat</button>
         <button type="submit" name="departament" class="btn btn-outline-dark" value="departament">Departament</button>
@@ -148,7 +148,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 </form>
 
-<nav class="container">
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- NAVEGADOR PARA CAMBIAR LAS VENTANAS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<nav class="container mt-3">
     <button id="btn-incidencies" onclick="showWindow('incidencies')">Incidencies</button>
     <button id="btn-informeTecnics" onclick="showWindow('informeTecnics')">Informe Tècnics</button>
     <button id="btn-informeDepartamental" onclick="showWindow('informeDepartamental')">Informe Departamental</button>

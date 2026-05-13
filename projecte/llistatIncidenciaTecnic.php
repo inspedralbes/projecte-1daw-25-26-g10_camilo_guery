@@ -43,6 +43,7 @@ if (!$incidencias) {
             </div>
         </form>
     </div>
+    <a class="btn btn-primary mt-3" href="tecnic.php">Tornar enrere</a>
     <?php
     include_once "footer.php";
     exit;
@@ -139,22 +140,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
     </div>
 </form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Descripció</th>
-            <th>Data</th>
-            <th>Departament</th>
-            <th>Tipus</th>
-            <th>Data Finalització</th>
-            <th>Prioritat</th>
-            <th>Actuacions</th>
-        </tr>
-    </thead>
-    <tbody>
-<?php
+<div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Descripció</th>
+                <th>Data</th>
+                <th>Departament</th>
+                <th>Tipus</th>
+                <th>Data Finalització</th>
+                <th>Prioritat</th>
+                <th>Actuacions</th>
+            </tr>
+        </thead>
+        <tbody>
+    <?php
         foreach ($incidencias as $incidencia) { 
             $prioritat = match($incidencia["prioritat"]) {
                 'Alta' => 'table-danger',
@@ -176,16 +177,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <?php } ?>
         </tbody>
     </table>
-
-<form method="GET" action="gestionarIncidencia.php">
-  <div class="input-group mt-2 px-4">
-    <span class="input-group-text">ID</span>
-    <div class="form-floating">
-      <input type="text" class="form-control" id="buscarId" name="idIncidencia" placeholder="Buscar">
-      <label for="buscarId">Buscar per ID</label>
+</div>
+    <form method="GET" action="gestionarIncidencia.php">
+    <div class="input-group mt-2 px-4">
+        <span class="input-group-text">ID</span>
+        <div class="form-floating">
+        <input type="text" class="form-control" id="buscarId" name="idIncidencia" placeholder="Buscar">
+        <label for="buscarId">Buscar per ID</label>
+        </div>
+        <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
+        <button type="submit" class="btn btn-primary">Buscar</button>
     </div>
-    <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
-    <button type="submit" class="btn btn-primary">Buscar</button>
-  </div>
-</form>
+    </form>
+    <a class="btn btn-primary mt-3" href="tecnic.php">Tornar enrere</a>
 <?php include_once "footer.php"; ?>
