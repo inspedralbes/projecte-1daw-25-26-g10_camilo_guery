@@ -50,6 +50,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $sentencia->get_result();
         $incidencias = $result->fetch_all(MYSQLI_ASSOC);
 
+    } if (empty($_POST["idTecnic"])) {
+        $sentencia = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data, i.dataFinalitzacio, i.prioritat, i.idTecnic,
+        t.nom AS nomTecnic,
+        COUNT(a.idActuacio) AS numActuacions,
+        SUM(a.temps) AS tempsTotal
+        FROM INCIDENCIA i
+        JOIN TECNIC t ON i.idTecnic = t.idTecnic
+        LEFT JOIN ACTUACIO a ON i.idIncidencia = a.idIncidencia
+        WHERE dataFinalitzacio IS NULL
+        GROUP BY i.idIncidencia
+        ORDER BY CASE 
+        WHEN i.prioritat = 'Alta' THEN 1
+        WHEN i.prioritat = 'Mitja' THEN 2
+        WHEN i.prioritat = 'Baixa' THEN 3
+        ELSE 4
+        END;");
+        $sentencia->execute();
+        $result = $sentencia->get_result();
+        $incidencias = $result->fetch_all(MYSQLI_ASSOC);    
     }
 }
 ?>
@@ -57,9 +76,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <form method="POST">
     <div class ="input-group mt-3 px-5">
         <select name="idTecnic" class="form-select">
-                <option value="default" selected>Escull Tècnic</option>
+                <option value="" selected>Total incidències pendents</option>
             <?php foreach ($tecnics as $tecnic) { ?>
-                <option value="<?php echo $tecnic['idTecnic']; ?>"><?php echo $tecnic["nom"]?></option>
+                <option value="<?php echo $tecnic["idTecnic"]; ?>"><?php echo $tecnic["nom"]?></option>
             <?php }; ?>
         </select>
         <div >
