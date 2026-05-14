@@ -87,40 +87,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Descripció</th>
-            <th>Data</th>
-            <th>Prioritat</th>
-            <th>Tecnic</th>
-            <th>Actuacions</th>
-            <th>Temps Invertit</th>
-        </tr>
-    </thead>
-    <tbody>
-<?php
-    foreach ($incidencias as $incidencia) { 
-        $prioritat = match($incidencia["prioritat"]) {
-            'Alta' => 'table-danger',
-            'Mitja' => 'table-warning',
-            'Baixa' => 'table-info',
-            default => 'table-light'
-        };
-?>
-    <tr class="<?php echo $prioritat; ?>">
-        <td><?php echo $incidencia["idIncidencia"]; ?></td>
-        <td><?php echo $incidencia["descripcio"]; ?></td>
-        <td><?php echo $incidencia["data"]; ?></td>
-        <td><?php echo $incidencia["prioritat"]; ?></td>
-        <td><?php echo $incidencia["nomTecnic"]; ?></td>
-        <td><?php echo $incidencia["numActuacions"] ?? "Sense Actuacions"; ?></td>
-        <td><?php echo $incidencia["tempsTotal"] ?? "0"; ?> min</td>
-    </tr>
-    <?php } ?>
-    </tbody>
-</table>
+<div class="container">
+    <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Descripció</th>
+                    <th>Data</th>
+                    <th>Prioritat</th>
+                    <th>Tecnic</th>
+                    <th>Actuacions</th>
+                    <th>Temps Invertit</th>
+                </tr>
+            </thead>
+            <tbody>
+        <?php
+            foreach ($incidencias as $incidencia) { 
+                $prioritat = match($incidencia["prioritat"]) {
+                    'Alta' => 'table-danger',
+                    'Mitja' => 'table-warning',
+                    'Baixa' => 'table-info',
+                    default => 'table-light'
+                };
+        ?>
+            <tr class="<?php echo $prioritat; ?>">
+                <td><?php echo $incidencia["idIncidencia"]; ?></td>
+                <td><?php echo $incidencia["descripcio"]; ?></td>
+                <td><?php echo $incidencia["data"]; ?></td>
+                <td><?php echo $incidencia["prioritat"]; ?></td>
+                <td><?php echo $incidencia["nomTecnic"]; ?></td>
+                <td><?php echo $incidencia["numActuacions"] ?? "Sense Actuacions"; ?></td>
+                <td><?php echo $incidencia["tempsTotal"] ?? "0"; ?> min</td>
+            </tr>
+            <?php }; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <div class="d-flex justify-content-center">
     <a class="btn btn-primary" href="modificarIncidencies.php">Tornar Enrere</a>

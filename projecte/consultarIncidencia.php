@@ -113,12 +113,14 @@ foreach ($incidencias as $incidencia) {
             </tbody>
         </table>
     <?php } else { ?>
-        <p class="text-center">No hi ha actuacions enregistrades.</p>
+        <div class="d-flex justify-content-center pt-5">
+            <p class="text-center pt-5">No hi ha actuacions enregistrades.</p>
+        </div>
     <?php } ?>
     </div>
 
     <div class="text-center mb-4 mt-2">
-        <a href="persona.php" class="btn btn-primary">Tornar Enrere</a>
+        <a href="professor.php" class="btn btn-primary">Tornar Enrere</a>
     </div>
 </div>
 <?php include_once "footer.php"; ?>

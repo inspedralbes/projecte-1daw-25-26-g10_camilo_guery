@@ -44,7 +44,7 @@ $nomsUrl = [
     '/gestionarIncidencia.php' => 'Gestionar Incidència',
     '/llistatIncidenciaTecnic.php' => 'Llistat d Incidències per Tecnics',
     '/modificarIncidencies.php' => 'Pàgina Responsable Informàtic',
-    '/persona.php' => 'Registrar Incidència',
+    '/professor.php' => 'Registrar Incidència',
     '/tecnic.php' => 'Llistat Tècnics',
 ];
 ?>

@@ -32,12 +32,8 @@ error_reporting(E_ALL);
             </a>
         </div>
     </header>
-<<<<<<< HEAD
 <main>
 
 <?php
 include_once "logger.php";
 ?>
-=======
-<main class="container">
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3

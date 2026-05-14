@@ -355,11 +355,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <div id="informeAcceso" class="window-info">
         <p>Hola</p>
     </div>
-
-    <a class="btn btn-primary mt-3" href="index.php">Tornar enrere</a>
     
-    <div class="d-flex justify-content-end pb-5">
-        <a class="btn btn-warning" href="incidenciesPendents.php">Incidències Pendents</a>
+    <div class="d-flex justify-content-start"> 
+        <a class="btn btn-primary mt-3" href="index.php">Tornar enrere</a>
+    </div>
+    <div class="d-flex justify-content-end">     
+        <a class="btn btn-warning mb-5" href="incidenciesPendents.php">Incidències Pendents</a>
     </div>
 
 </div>
