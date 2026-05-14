@@ -1,12 +1,13 @@
 services:
   # Servidor web Apache amb PHP i suport MySQL
   web:
-    build: ./projecte
+    image: ebota/daw:apache_php_mysql_mongodb
     container_name: incidencia-web
     ports:
       - "8080:80"
     volumes:
       - ./projecte:/var/www/html
+    command: /bin/bash -c "composer install --no-interaction --no-plugins --no-scripts; apache2-foreground"
     depends_on:
       - db
     networks:
@@ -38,8 +39,33 @@ services:
     networks:
       - app-network
 
+  # Servidor de base de dades MongoDB
+  mongo:
+    image: mongo:latest
+    volumes:   
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: usuari
+      MONGO_INITDB_ROOT_PASSWORD: usuari1234
+
+  # Interfície web per gestionar MongoDB    
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8082:8081"
+    environment:
+      #Per entrar a la web de mongo-express, les credencials són
+      #admin
+      #pass
+      ME_CONFIG_MONGODB_URL: mongodb://usuari:usuari1234@mongo:27017/
+    depends_on:
+      - mongo
+
 volumes:
   mysql-data:
+  mongodb_data:
 
 networks:
   app-network:

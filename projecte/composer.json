@@ -1,0 +1,13 @@
+{
+    "name": "inspedralbes/amb-mongodb",
+    "description": "PHP Amb MongoDB",
+
+    "authors": [
+        {
+            "name": "Nom Alumne"
+        }
+    ],
+    "require": {
+        "mongodb/mongodb": "^2.0"
+    }
+}
