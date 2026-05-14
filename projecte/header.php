@@ -25,3 +25,7 @@ error_reporting(E_ALL);
         </div>
     </header>
 <main>
+
+<?php
+include_once "logger.php";
+?>

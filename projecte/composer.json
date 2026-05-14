@@ -1,0 +1,7 @@
+{
+    "name": "gestor/incidencias",
+    "description": "Gestor de Incidencias",
+    "require": {
+        "mongodb/mongodb": "^2.0"
+    }
+}

@@ -1,8 +1,23 @@
-# Imatge base: PHP 8.2 amb Apache
-FROM php:8.2-apache
+# Imatge base: PHP 8.3 amb Apache
+FROM php:8.3-apache
 
 # Instal·lar l'extensió mysqli per connectar amb MySQL
 RUN docker-php-ext-install mysqli
+
+# Instalar MongoDB para PHP 8.3
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    autoconf \
+    pkg-config \
+    libssl-dev \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb
+
+COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
+COPY . /var/www/html
+WORKDIR /var/www/html
+RUN composer install --no-dev
 
 # Habilitar visualització d'errors (només per desenvolupament)
 # Modifiquem el fitxer de configuració del PHP que estarà dins de la imatge

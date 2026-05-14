@@ -38,8 +38,23 @@ services:
     networks:
       - app-network
 
+  mongo:
+    image: mongo:latest
+    container_name: gestorIncidencia-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: user1234
+      MONGO_INITDB_DATABASE: gestor-incidencias
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
 volumes:
   mysql-data:
+  mongo-data:
 
 networks:
   app-network:

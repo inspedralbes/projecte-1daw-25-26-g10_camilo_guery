@@ -148,11 +148,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 </form>
 
-<nav class="container">
-    <button id="btn-incidencies" onclick="showWindow('incidencies')">Incidencies</button>
-    <button id="btn-informeTecnics" onclick="showWindow('informeTecnics')">Informe Tècnics</button>
-    <button id="btn-informeDepartamental" onclick="showWindow('informeDepartamental')">Informe Departamental</button>
-    <button id="btn-informeAcceso" onclick="showWindow('informeAcceso')">Panel d'Accés</button>
+<nav class="container mt-2">
+    <button class="btn btn-light" id="btn-incidencies" onclick="showWindow('incidencies')">Incidencies</button>
+    <button class="btn btn-light" id="btn-informeTecnics" onclick="showWindow('informeTecnics')">Informe Tècnics</button>
+    <button class="btn btn-light" id="btn-informeDepartamental" onclick="showWindow('informeDepartamental')">Informe Departamental</button>
+    <a class="btn btn-light" id="btn-panellAcces" href="panellAcces.php">Panel d'Accés</a>
 </nav>
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE MODIFICAR INCIDENCIAS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -358,8 +358,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     <a class="btn btn-primary mt-3" href="index.php">Tornar enrere</a>
     
-    <div style="position: fixed; bottom: 200px; right: 50px;">
-        <a class="btn btn-warning mt-3" href="incidenciesPendents.php">Incidències Pendents</a>
+    <div class="d-flex justify-content-end pb-5">
+        <a class="btn btn-warning" href="incidenciesPendents.php">Incidències Pendents</a>
     </div>
 
 </div>
