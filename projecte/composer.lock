@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "c51b6af104e99bc8fb0fef0c3d29e5b1",
     "packages": [
         {
@@ -19,36 +18,14 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/12e56461166d915e3dd8e4969ad0940ed5207d88",
                 "reference": "12e56461166d915e3dd8e4969ad0940ed5207d88",
-=======
-    "content-hash": "12dfdb3a5a3c14a2049e61d89b3908b9",
-    "packages": [
-        {
-            "name": "mongodb/mongodb",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mongodb/mongo-php-library.git",
-                "reference": "04cd7edc6a28950e3fab6eccb2869d72a0541232"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/04cd7edc6a28950e3fab6eccb2869d72a0541232",
-                "reference": "04cd7edc6a28950e3fab6eccb2869d72a0541232",
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-<<<<<<< HEAD
                 "ext-mongodb": "^2.3",
                 "php": "^8.1",
                 "psr/log": "^1.1.4|^2|^3",
                 "symfony/polyfill-php85": "^1.33"
-=======
-                "ext-mongodb": "^2.0",
-                "php": "^8.1",
-                "psr/log": "^1.1.4|^2|^3"
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3
             },
             "replace": {
                 "mongodb/builder": "*"
@@ -56,15 +33,9 @@
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
                 "phpunit/phpunit": "^10.5.35",
-<<<<<<< HEAD
                 "rector/rector": "^2.3.4",
                 "squizlabs/php_codesniffer": "^3.7",
                 "vimeo/psalm": "~6.14.2"
-=======
-                "rector/rector": "^1.2",
-                "squizlabs/php_codesniffer": "^3.7",
-                "vimeo/psalm": "6.5.*"
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3
             },
             "type": "library",
             "extra": {
@@ -106,15 +77,7 @@
                 "mongodb",
                 "persistence"
             ],
-<<<<<<< HEAD
             "time": "2026-04-28T12:50:06+00:00"
-=======
-            "support": {
-                "issues": "https://github.com/mongodb/mongo-php-library/issues",
-                "source": "https://github.com/mongodb/mongo-php-library/tree/2.0.0"
-            },
-            "time": "2025-04-10T08:34:11+00:00"
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3
         },
         {
             "name": "psr/log",
@@ -165,7 +128,6 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
-<<<<<<< HEAD
         },
         {
             "name": "symfony/polyfill-php85",
@@ -246,8 +208,6 @@
                 }
             ],
             "time": "2026-04-26T13:10:57+00:00"
-=======
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3
         }
     ],
     "packages-dev": [],
@@ -258,9 +218,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-<<<<<<< HEAD
     "plugin-api-version": "2.9.0"
-=======
-    "plugin-api-version": "2.6.0"
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3
 }

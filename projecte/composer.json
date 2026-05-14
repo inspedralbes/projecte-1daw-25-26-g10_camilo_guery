@@ -1,17 +1,6 @@
 {
-<<<<<<< HEAD
     "name": "gestor/incidencias",
     "description": "Gestor de Incidencias",
-=======
-    "name": "inspedralbes/amb-mongodb",
-    "description": "PHP Amb MongoDB",
-
-    "authors": [
-        {
-            "name": "Nom Alumne"
-        }
-    ],
->>>>>>> 5d68378bd3ca045ca9eda994ebce441c2e97ede3
     "require": {
         "mongodb/mongodb": "^2.0"
     }
