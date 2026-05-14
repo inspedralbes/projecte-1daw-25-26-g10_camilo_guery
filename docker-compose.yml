@@ -10,10 +10,12 @@ services:
     command: /bin/bash -c "composer install --no-interaction --no-plugins --no-scripts; apache2-foreground"
     depends_on:
       - db
+    environment:
+      MONGODB_URI: mongodb://usuari:usuari1234@mongo:27017
     networks:
       - app-network
 
-  # Servidor de base de dades MySQL
+  # MySQL (BD relacional)
   db:
     image: mysql:8.0
     container_name: gestorIncidencia-db
@@ -28,7 +30,7 @@ services:
     networks:
       - app-network
 
-  # Adminer per gestionar la base de dades
+  # Adminer (opcional en producción, pero el profe lo deja a veces)
   adminer:
     image: adminer
     container_name: gestorIncidencia-adminer
@@ -39,23 +41,34 @@ services:
     networks:
       - app-network
 
-  mongo:
-    image: mongo:latest
-    container_name: gestorIncidencia-mongo
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: user
-      MONGO_INITDB_ROOT_PASSWORD: user1234
-      MONGO_INITDB_DATABASE: gestor-incidencias
-    volumes:
-      - mongo-data:/data/db
-    networks:
+  mongo: 
+    image: mongo:latest 
+    volumes: 
+    - mongodb_data:/data/db 
+    ports: 
+    - "27017:27017" 
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: usuari 
+      MONGO_INITDB_ROOT_PASSWORD: usuari1234
+    networks: 
       - app-network
 
+  mongo-express: 
+    image: mongo-express 
+    ports: 
+    - "8082:8081" 
+    environment: 
+    #Per entrar a la web de mongo-express, les credencials són 
+    #admin 
+    #pass 
+      ME_CONFIG_MONGODB_URL: mongodb://usuari:usuari1234@mongo:27017/ 
+    depends_on: 
+    - mongo 
+    networks: 
+      - app-network
 volumes:
   mysql-data:
-  mongo-data:
+  mongodb_data:
 
 networks:
   app-network:
