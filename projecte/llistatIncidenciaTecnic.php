@@ -1,5 +1,4 @@
 <?php
-include_once "header.php";
 $mysqli = include_once "conexio.php";
 $idTecnic = $_GET["idTecnic"];
 $sentencia = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data,
@@ -16,7 +15,17 @@ $sentencia->execute();
 
 $result = $sentencia->get_result();
 $incidencias = $result->fetch_all(MYSQLI_ASSOC);
-# Obtenemos solo una fila, que será el videojuego a editar
+
+$sentencia2 = $mysqli->prepare("SELECT nom FROM TECNIC WHERE idTecnic = ?");
+$sentencia2->bind_param("i", $idTecnic);
+$sentencia2->execute();
+$result2 = $sentencia2->get_result();
+$tecnico = $result2->fetch_assoc();
+
+$titulo = "Llistat d'Incidències" . " - " . $tecnico["nom"];
+
+include_once "header.php";
+
 if (!$incidencias) {
     ?>
     <div class="container mt-5">
@@ -34,6 +43,7 @@ if (!$incidencias) {
             </div>
         </form>
     </div>
+    <a class="btn btn-primary mt-3" href="tecnic.php">Tornar enrere</a>
     <?php
     include_once "footer.php";
     exit;
@@ -130,22 +140,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
     </div>
 </form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Descripció</th>
-            <th>Data</th>
-            <th>Departament</th>
-            <th>Tipus</th>
-            <th>Data Finalització</th>
-            <th>Prioritat</th>
-            <th>Actuacions</th>
-        </tr>
-    </thead>
-    <tbody>
-<?php
+<div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Descripció</th>
+                <th>Data</th>
+                <th>Departament</th>
+                <th>Tipus</th>
+                <th>Data Finalització</th>
+                <th>Prioritat</th>
+                <th>Actuacions</th>
+            </tr>
+        </thead>
+        <tbody>
+    <?php
         foreach ($incidencias as $incidencia) { 
             $prioritat = match($incidencia["prioritat"]) {
                 'Alta' => 'table-danger',
@@ -167,16 +177,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <?php } ?>
         </tbody>
     </table>
-
-<form method="GET" action="gestionarIncidencia.php">
-  <div class="input-group mt-2 px-4">
-    <span class="input-group-text">ID</span>
-    <div class="form-floating">
-      <input type="text" class="form-control" id="buscarId" name="idIncidencia" placeholder="Buscar">
-      <label for="buscarId">Buscar per ID</label>
+</div>
+    <form method="GET" action="gestionarIncidencia.php">
+    <div class="input-group mt-2 px-4">
+        <span class="input-group-text">ID</span>
+        <div class="form-floating">
+        <input type="text" class="form-control" id="buscarId" name="idIncidencia" placeholder="Buscar">
+        <label for="buscarId">Buscar per ID</label>
+        </div>
+        <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
+        <button type="submit" class="btn btn-primary">Buscar</button>
     </div>
-    <input type="hidden" name="idTecnic" value="<?php echo $idTecnic ?>">
-    <button type="submit" class="btn btn-primary">Buscar</button>
-  </div>
-</form>
+    </form>
+    <a class="btn btn-primary mt-3" href="tecnic.php">Tornar enrere</a>
 <?php include_once "footer.php"; ?>

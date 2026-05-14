@@ -1,12 +1,13 @@
 services:
   # Servidor web Apache amb PHP i suport MySQL
   web:
-    build: ./projecte
+    image: ebota/daw:apache_php_mysql_mongodb
     container_name: incidencia-web
     ports:
       - "8080:80"
     volumes:
       - ./projecte:/var/www/html
+    command: /bin/bash -c "composer install --no-interaction --no-plugins --no-scripts; apache2-foreground"
     depends_on:
       - db
     networks:

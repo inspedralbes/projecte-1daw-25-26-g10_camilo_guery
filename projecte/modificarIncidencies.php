@@ -140,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 ?>
 
-<form method="GET">
+<form method="GET" class="mt-3" >
     <div class="btn-group float-end" role="group" aria-label="Basic outlined example">
         <button type="submit" name="prioritat" class="btn btn-outline-dark" value="prioritat">Prioritat</button>
         <button type="submit" name="departament" class="btn btn-outline-dark" value="departament">Departament</button>

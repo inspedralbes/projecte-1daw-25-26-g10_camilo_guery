@@ -46,7 +46,7 @@ $incidencias = $resultadoQuery->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
     <div class=" mt-4 mb-5">
-    <a href="persona.php" class="btn btn-primary m-2">Tornar Enrere</a>
+    <a href="professor.php" class="btn btn-primary m-2">Tornar Enrere</a>
     <div>
 </div>
 
