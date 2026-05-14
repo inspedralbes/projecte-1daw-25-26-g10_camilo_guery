@@ -11,6 +11,11 @@ error_reporting(E_ALL);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $titulo ?? "Gestor d'Incidències" ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Meta-etiquetes per la previsualització d'enllaços a whatsapp-->
+    <meta property="og:title" content="<?php echo htmlspecialchars($ogTitle ?? 'Gestor d Incidències'); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($ogDescription ?? 'Aplicació de gestió'); ?>">
+    <meta property="og:url" content="<?php echo htmlspecialchars($ogUrl ?? 'http://' . $_SERVER['HTTP_HOST']); ?>">
+    <meta property="og:type" content="website">
 
     <!-- Font Awesome para Iconos-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

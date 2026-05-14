@@ -143,42 +143,44 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 <div class="container">
     <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
-        <table class="table mb-0">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Descripció</th>
-                    <th>Data</th>
-                    <th>Departament</th>
-                    <th>Tipus</th>
-                    <th>Data Finalització</th>
-                    <th>Prioritat</th>
-                    <th>Actuacions</th>
-                </tr>
-            </thead>
-            <tbody>
-        <?php
-            foreach ($incidencias as $incidencia) { 
-                $prioritat = match($incidencia["prioritat"]) {
-                    'Alta' => 'table-danger',
-                    'Mitja' => 'table-warning',
-                    'Baixa' => 'table-info',
-                    default => 'tabla-light'
-                };
-    ?>
-                    <tr class="<?php echo $prioritat?>">
-                        <td><?php echo $incidencia["idIncidencia"] ?></td>
-                        <td><?php echo $incidencia["descripcio"] ?></td>
-                        <td><?php echo $incidencia["data"] ?></td>
-                        <td><?php echo $incidencia["nomDepartament"] ?></td>
-                        <td><?php echo $incidencia["nomTipus"] ?></td>
-                        <td><?php echo $incidencia["dataFinalitzacio"] ?? "No Finalitzada" ?></td>
-                        <td><?php echo $incidencia["prioritat"] ?></td>
-                        <td><a class="btn btn-success btn-sm" href="actuacioIncidencia.php?idIncidencia=<?php echo $incidencia["idIncidencia"] ?>&idTecnic=<?php echo $idTecnic?>">Veure</a></td>
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Descripció</th>
+                        <th>Data</th>
+                        <th>Departament</th>
+                        <th>Tipus</th>
+                        <th>Data Finalització</th>
+                        <th>Prioritat</th>
+                        <th>Actuacions</th>
                     </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+            <?php
+                foreach ($incidencias as $incidencia) { 
+                    $prioritat = match($incidencia["prioritat"]) {
+                        'Alta' => 'table-danger',
+                        'Mitja' => 'table-warning',
+                        'Baixa' => 'table-info',
+                        default => 'tabla-light'
+                    };
+        ?>
+                        <tr class="<?php echo $prioritat?>">
+                            <td><?php echo $incidencia["idIncidencia"] ?></td>
+                            <td><?php echo $incidencia["descripcio"] ?></td>
+                            <td><?php echo $incidencia["data"] ?></td>
+                            <td><?php echo $incidencia["nomDepartament"] ?></td>
+                            <td><?php echo $incidencia["nomTipus"] ?></td>
+                            <td><?php echo $incidencia["dataFinalitzacio"] ?? "No Finalitzada" ?></td>
+                            <td><?php echo $incidencia["prioritat"] ?></td>
+                            <td><a class="btn btn-success btn-sm" href="actuacioIncidencia.php?idIncidencia=<?php echo $incidencia["idIncidencia"] ?>&idTecnic=<?php echo $idTecnic?>">Veure</a></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
     <form method="GET" action="gestionarIncidencia.php">

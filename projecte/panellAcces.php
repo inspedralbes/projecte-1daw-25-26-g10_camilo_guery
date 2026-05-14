@@ -61,22 +61,24 @@ $nomsUrl = [
     <hr>
 
     <h3>Páginas més visitades</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>URL</th>
-                <th>Visitas</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($paginesVisitades as $pagina): ?>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td><?php echo $nomsUrl[$pagina['_id']] ?? $pagina['_id']; ?></td>
-                    <td><?php echo $pagina['count']; ?></td>
+                    <th>URL</th>
+                    <th>Visites</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($paginesVisitades as $pagina): ?>
+                    <tr>
+                        <td><?php echo $nomsUrl[$pagina['_id']] ?? $pagina['_id']; ?></td>
+                        <td><?php echo $pagina['count']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
     <h3>IPs més activas</h3>
     <table class="table">

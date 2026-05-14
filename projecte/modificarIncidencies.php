@@ -160,81 +160,83 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <div id="incidencies" class="window-info active">
         <form action="actualitzar.php" method="POST">
             <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
-                <table class="table mb-0">
-                    <thead>
-                        <tr>
-                            <th>Id d'Incidència</th>
-                            <th>Descripció</th>
-                            <th>Data</th>
-                            <th>Departament</th>
-                            <th>Tècnic</th>
-                            <th>Tipus</th>
-                            <th>Data Finalització</th>
-                            <th>Prioritat</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($incidencias as $incidencia) { 
-                            $prioritat = match($incidencia["prioritat"]) {
-                                'Alta' => 'table-danger',
-                                'Mitja' => 'table-warning',
-                                'Baixa' => 'table-info',
-                                default => 'table-light'
-                            };
-                        ?>
-                        <tr class="<?php echo $prioritat?>">
-                            <td><?php echo $incidencia["idIncidencia"] ?></td>
-                            <td><?php echo $incidencia["descripcio"] ?></td>
-                            <td><?php echo $incidencia["data"] ?></td>
-                            <td><?php echo $incidencia["nomDepartament"] ?></td>
-                            <td>
-                                <select name="idTecnic[<?php echo $incidencia["idIncidencia"]; ?>]">
-                                    <option value="" <?php echo ($incidencia["idTecnic"] == null) ? "selected" : ""; ?>>
-                                        Sin asignar
-                                    </option>
-                                    <?php foreach ($tecnicos as $tecnico) { ?>
-                                        <option value="<?php echo $tecnico["idTecnic"]; ?>"
-                                            <?php echo ($tecnico["idTecnic"] == $incidencia["idTecnic"]) ? "selected" : ""; ?>>
-                                            <?php echo $tecnico["nom"]; ?>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Id d'Incidència</th>
+                                <th>Descripció</th>
+                                <th>Data</th>
+                                <th>Departament</th>
+                                <th>Tècnic</th>
+                                <th>Tipus</th>
+                                <th>Data Finalització</th>
+                                <th>Prioritat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($incidencias as $incidencia) { 
+                                $prioritat = match($incidencia["prioritat"]) {
+                                    'Alta' => 'table-danger',
+                                    'Mitja' => 'table-warning',
+                                    'Baixa' => 'table-info',
+                                    default => 'table-light'
+                                };
+                            ?>
+                            <tr class="<?php echo $prioritat?>">
+                                <td><?php echo $incidencia["idIncidencia"] ?></td>
+                                <td><?php echo $incidencia["descripcio"] ?></td>
+                                <td><?php echo $incidencia["data"] ?></td>
+                                <td><?php echo $incidencia["nomDepartament"] ?></td>
+                                <td>
+                                    <select name="idTecnic[<?php echo $incidencia["idIncidencia"]; ?>]">
+                                        <option value="" <?php echo ($incidencia["idTecnic"] == null) ? "selected" : ""; ?>>
+                                            Sin asignar
                                         </option>
-                                    <?php } ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select name="idTipus[<?php echo $incidencia["idIncidencia"]; ?>]">
-                                    <option value="" <?php echo ($incidencia["idTipus"] == null) ? "selected" : ""; ?>>
-                                        Sin asignar
-                                    </option>
-                                    <?php foreach ($tipus as $tipo) { ?>
-                                        <option value="<?php echo $tipo["idTipus"]; ?>"
-                                            <?php echo ($tipo["idTipus"] == $incidencia["idTipus"]) ? "selected" : ""; ?>>
-                                            <?php echo $tipo["nom"]; ?>
+                                        <?php foreach ($tecnicos as $tecnico) { ?>
+                                            <option value="<?php echo $tecnico["idTecnic"]; ?>"
+                                                <?php echo ($tecnico["idTecnic"] == $incidencia["idTecnic"]) ? "selected" : ""; ?>>
+                                                <?php echo $tecnico["nom"]; ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="idTipus[<?php echo $incidencia["idIncidencia"]; ?>]">
+                                        <option value="" <?php echo ($incidencia["idTipus"] == null) ? "selected" : ""; ?>>
+                                            Sin asignar
                                         </option>
-                                    <?php } ?>
-                                </select>
-                            </td>
-                            <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                            <td>
-                                <select name="prioritat[<?php echo $incidencia["idIncidencia"]; ?>]">
-                                    <option value="" <?php echo ($incidencia["prioritat"] == null) ? "selected" : ""; ?>>
-                                        Sin asignar
-                                    </option>
-                                    <option value="Alta" <?php echo ($incidencia["prioritat"] == "Alta") ? "selected" : ""; ?>>
-                                        Alta
-                                    </option>
-                                    <option value="Mitja" <?php echo ($incidencia["prioritat"] == "Mitja") ? "selected" : ""; ?>>
-                                        Mitja
-                                    </option>
-                                    <option value="Baixa" <?php echo ($incidencia["prioritat"] == "Baixa") ? "selected" : ""; ?>>
-                                        Baixa
-                                    </option>
-                                </select>
-                            </td>
-                        </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                                        <?php foreach ($tipus as $tipo) { ?>
+                                            <option value="<?php echo $tipo["idTipus"]; ?>"
+                                                <?php echo ($tipo["idTipus"] == $incidencia["idTipus"]) ? "selected" : ""; ?>>
+                                                <?php echo $tipo["nom"]; ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                                <td>
+                                    <select name="prioritat[<?php echo $incidencia["idIncidencia"]; ?>]">
+                                        <option value="" <?php echo ($incidencia["prioritat"] == null) ? "selected" : ""; ?>>
+                                            Sin asignar
+                                        </option>
+                                        <option value="Alta" <?php echo ($incidencia["prioritat"] == "Alta") ? "selected" : ""; ?>>
+                                            Alta
+                                        </option>
+                                        <option value="Mitja" <?php echo ($incidencia["prioritat"] == "Mitja") ? "selected" : ""; ?>>
+                                            Mitja
+                                        </option>
+                                        <option value="Baixa" <?php echo ($incidencia["prioritat"] == "Baixa") ? "selected" : ""; ?>>
+                                            Baixa
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <input type="submit" value="Guardar cambios" class="btn btn-success">
         </form>
@@ -257,41 +259,43 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <input type="submit" value="Filtrar">
         </form>
         <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
-            <table class="table mb-0">
-                <thead>
-                    <tr>
-                        <th>Id d'Incidència</th>
-                        <th>Descripció</th>
-                        <th>Data</th>
-                        <th>Departament</th>
-                        <th>Tipus</th>
-                        <th>Data Finalització</th>
-                        <th>Prioritat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach ($incidenciasTecnicos as $incidencia) { 
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Id d'Incidència</th>
+                            <th>Descripció</th>
+                            <th>Data</th>
+                            <th>Departament</th>
+                            <th>Tipus</th>
+                            <th>Data Finalització</th>
+                            <th>Prioritat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    foreach ($incidenciasTecnicos as $incidencia) { 
 
-                    $prioritat = match($incidencia["prioritat"]) {
-                        'Alta' => 'table-danger',
-                        'Mitja' => 'table-warning',
-                        'Baixa' => 'table-info',
-                        default => 'table-light'
-                    };
-                ?>
-                    <tr class="<?php echo $prioritat; ?>">
-                        <td><?php echo $incidencia["idIncidencia"] ?></td>
-                        <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
-                        <td><?php echo $incidencia["data"] ?></td>
-                        <td><?php echo htmlspecialchars($incidencia["nomDepartament"]) ?></td>
-                        <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
-                        <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                        <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
-                    </tr>
-                <?php } ?>
-                </tbody>
-            </table>
+                        $prioritat = match($incidencia["prioritat"]) {
+                            'Alta' => 'table-danger',
+                            'Mitja' => 'table-warning',
+                            'Baixa' => 'table-info',
+                            default => 'table-light'
+                        };
+                    ?>
+                        <tr class="<?php echo $prioritat; ?>">
+                            <td><?php echo $incidencia["idIncidencia"] ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
+                            <td><?php echo $incidencia["data"] ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["nomDepartament"]) ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
+                            <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -312,41 +316,43 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <input type="submit" value="Filtrar">
         </form>
         <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
-            <table class="table mb-0">
-                <thead>
-                    <tr>
-                        <th>Id d'Incidència</th>
-                        <th>Descripció</th>
-                        <th>Data</th>
-                        <th>Tècnic</th>
-                        <th>Tipus</th>
-                        <th>Data Finalització</th>
-                        <th>Prioritat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($incidenciasDepartamentos as $incidencia) { 
-
-                        $prioritat = match($incidencia["prioritat"]) {
-                            'Alta' => 'table-danger',
-                            'Mitja' => 'table-warning',
-                            'Baixa' => 'table-info',
-                            default => 'table-light'
-                        };
-                    ?>
-                        <tr class="<?php echo $prioritat; ?>">
-                            <td><?php echo $incidencia["idIncidencia"] ?></td>
-                            <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
-                            <td><?php echo $incidencia["data"] ?></td>
-                            <td><?php echo htmlspecialchars($incidencia["nomTecnic"] ?? "Sin asignar") ?></td>
-                            <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
-                            <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                            <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Id d'Incidència</th>
+                            <th>Descripció</th>
+                            <th>Data</th>
+                            <th>Tècnic</th>
+                            <th>Tipus</th>
+                            <th>Data Finalització</th>
+                            <th>Prioritat</th>
                         </tr>
-                    <?php } ?>
-                </tbody>
-            </table> 
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($incidenciasDepartamentos as $incidencia) { 
+
+                            $prioritat = match($incidencia["prioritat"]) {
+                                'Alta' => 'table-danger',
+                                'Mitja' => 'table-warning',
+                                'Baixa' => 'table-info',
+                                default => 'table-light'
+                            };
+                        ?>
+                            <tr class="<?php echo $prioritat; ?>">
+                                <td><?php echo $incidencia["idIncidencia"] ?></td>
+                                <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
+                                <td><?php echo $incidencia["data"] ?></td>
+                                <td><?php echo htmlspecialchars($incidencia["nomTecnic"] ?? "Sin asignar") ?></td>
+                                <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
+                                <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                                <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div> 
         </div>
     </div>
 

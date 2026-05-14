@@ -97,8 +97,9 @@ $prioritat = match($incidencia["prioritat"]) {
     ?>
 
     <?php if (!empty($actuacions)) { ?>
-    <div class="">
-        <h3 class="text-center">Historial d'Actuacions</h3>
+    
+    <h3 class="text-center">Historial d'Actuacions</h3>
+    <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
