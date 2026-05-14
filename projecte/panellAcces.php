@@ -2,7 +2,7 @@
 require_once "header.php";
 require __DIR__ . '/vendor/autoload.php';
 
-$uri = getenv('MONGODB_URI') ?: 'mongodb://user:user1234@mongo:27017/';
+$uri = getenv('MONGODB_URI') ?: 'mongodb://ususari:usuari1234@mongo:27017/';
 $client = new MongoDB\Client($uri);
 $db = $client->gestorIncidencia;
 $collection = $db->logs;
