@@ -1,13 +1,18 @@
 /* FUNCION PER CAMBIAR DE SECCION EN LA PAGINA DE ADMIN */
 
-const varieties = ['incidencies', 'informeTecnics', 'informeDepartamental', 'informeAcceso'];
+function showWindow(id) {
 
-function showWindow(ventana) {
-    varieties.forEach(v => {
-        document.getElementById(v).classList.remove('active');
-        document.getElementById(`btn-${v}`).classList.remove('active');
+    const windows = document.querySelectorAll('.window-info');
+
+    windows.forEach(element => {
+        element.classList.remove('active');
+        element.style.display = 'none';
     });
-    
-    document.getElementById(ventana).classList.add('active');
-    document.getElementById(`btn-${ventana}`).classList.add('active');
+
+    const selectedWindow = document.getElementById(id);
+
+    if (selectedWindow) {
+        selectedWindow.classList.add('active');
+        selectedWindow.style.display = 'block';
+    }
 }

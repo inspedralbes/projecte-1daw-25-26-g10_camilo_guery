@@ -357,10 +357,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE PANEL DE ACCESO---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
-    <div id="informeAcceso" class="window-info">
-        <p>Hola</p>
-    </div>
     
     <div class="d-flex justify-content-start"> 
         <a class="btn btn-primary mt-3" href="index.php">Tornar enrere</a>
@@ -370,7 +366,4 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 
 </div>
-<script>
-
-</script>
 <?php include_once "footer.php"; ?>
