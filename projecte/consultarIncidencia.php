@@ -1,8 +1,15 @@
 <?php
-include_once "header.php";
-$mysqli = include_once "conexio.php";
 $idIncidencia = $_POST["idIncidencia"];
 $idIncidencia = (int)$idIncidencia;
+
+# metatags og:
+$ogTitle = "Incidencia #" . $idIncidencia;
+$ogDescription = "Consulta la teva incidencia";
+$ogUrl = $ogUrl ?? "http://" . $_SERVER['HTTP_HOST'];
+
+include_once "header.php";
+$mysqli = include_once "conexio.php";
+
 $resultado = $mysqli->prepare("SELECT i.idIncidencia, i.descripcio, i.data, i.dataFinalitzacio, i.prioritat,
     d.nom AS nomDepartament, 
     t.nom AS nomTecnic, 
@@ -94,24 +101,26 @@ foreach ($incidencias as $incidencia) {
 
     <?php if (!empty($actuacions)) { ?>
     <div>
-        <h3 class="text-center">Historial d'Actuacions</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Descripció</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($actuacions as $actuacio) { ?>
+    <h3 class="text-center">Historial d'Actuacions</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td><?php echo $actuacio["data"]; ?></td>
-                        <td><?php echo $actuacio["descripcio"]; ?></td>
+                        <th>Data</th>
+                        <th>Descripció</th>
+                        <th></th>
                     </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($actuacions as $actuacio) { ?>
+                        <tr>
+                            <td><?php echo $actuacio["data"]; ?></td>
+                            <td><?php echo $actuacio["descripcio"]; ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     <?php } else { ?>
         <div class="d-flex justify-content-center pt-5">
             <p class="text-center pt-5">No hi ha actuacions enregistrades.</p>

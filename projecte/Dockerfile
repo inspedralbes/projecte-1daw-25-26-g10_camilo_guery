@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     autoconf \
     pkg-config \
     libssl-dev \
-    && pecl install mongodb \
+    && pecl install mongodb\
     && docker-php-ext-enable mongodb
 
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
