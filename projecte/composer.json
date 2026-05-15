@@ -2,6 +2,7 @@
     "name": "gestor/incidencias",
     "description": "Gestor de Incidencias",
     "require": {
-        "mongodb/mongodb": "^2.0"
+        "mongodb/mongodb": "^2.0",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
