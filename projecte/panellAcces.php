@@ -22,37 +22,73 @@ $nomsUrl = [
     '/tecnic.php' => 'Llistat Tècnics',
 ];
 
-// Filtres
-
+// =====================
+// FILTROS
+// =====================
 $fechaInici = $_GET['fecha_inici'] ?? '';
 $fechaFi = $_GET['fecha_fi'] ?? '';
 $pagina = $_GET['pagina'] ?? '';
 
 $filtres = [];
 
-if($pagina) {
+// filtro por página
+if ($pagina) {
     $filtres['url'] = $pagina;
 }
 
+// filtro por fechas
+if ($fechaInici || $fechaFi) {
 
-// Total de accesos
+    $timestamp = [];
+
+    if ($fechaInici) {
+        $timestamp['$gte'] = new MongoDB\BSON\UTCDateTime(
+            strtotime($fechaInici . ' 00:00:00') * 1000
+        );
+    }
+
+    if ($fechaFi) {
+        $timestamp['$lte'] = new MongoDB\BSON\UTCDateTime(
+            strtotime($fechaFi . ' 23:59:59') * 1000
+        );
+    }
+
+    if (!empty($timestamp)) {
+        $filtres['timestamp'] = $timestamp;
+    }
+}
+
+// FIX IMPORTANTE PARA MONGODB
+if (empty($filtres)) {
+    $match = new stdClass();
+} else {
+    $match = (object)$filtres;
+}
+
+// =====================
+// CONSULTAS
+// =====================
+
+// Total accesos
 $totalAccesos = $collection->countDocuments($filtres);
 
 // Páginas más visitadas
 $paginesVisitades = $collection->aggregate([
-    ['$match' => (object)$filtres],
+    ['$match' => $match],
     ['$group' => [
-        '_id' => '$url', 'count' => ['$sum' => 1]
+        '_id' => '$url',
+        'count' => ['$sum' => 1]
     ]],
     ['$sort' => ['count' => -1]],
     ['$limit' => 10]
 ]);
 
-// Usuarios más activos (IPs más frecuentes)
+// IPs más activas
 $ipsMasActivas = $collection->aggregate([
-    ['$match' => (object)$filtres],
+    ['$match' => $match],
     ['$group' => [
-        '_id' => '$ip', 'count' => ['$sum' => 1]
+        '_id' => '$ip',
+        'count' => ['$sum' => 1]
     ]],
     ['$sort' => ['count' => -1]],
     ['$limit' => 10]
@@ -60,7 +96,7 @@ $ipsMasActivas = $collection->aggregate([
 
 // Accesos por día
 $accesosPorDia = $collection->aggregate([
-    ['$match' => (object)$filtres],
+    ['$match' => $match],
     ['$group' => [
         '_id' => [
             '$dateToString' => [
@@ -79,29 +115,31 @@ $accesosPorDia = $collection->aggregate([
     <div class="text-center">
         <h2>Panell d'Accès</h2>
     </div>
+
     <form method="GET" class="mb-4">
 
         <select name="pagina">
             <option value="">Todas las páginas</option>
 
             <?php foreach ($nomsUrl as $url => $nom): ?>
-
                 <option value="<?php echo $url; ?>"
                     <?php echo ($pagina == $url) ? 'selected' : ''; ?>>
-
                     <?php echo $nom; ?>
-
                 </option>
-
             <?php endforeach; ?>
 
         </select>
 
-        <button type="submit">
-            Filtrar
-        </button>
+        <label>Desde:</label>
+        <input type="date" name="fecha_inici" value="<?php echo $fechaInici; ?>">
+
+        <label>Hasta:</label>
+        <input type="date" name="fecha_fi" value="<?php echo $fechaFi; ?>">
+
+        <button type="submit">Filtrar</button>
 
     </form>
+
     <div class="p-3" style="background-color: gainsboro;">
         <h3>Total d'Accesos: <?php echo $totalAccesos; ?></h3>
     </div>
