@@ -140,20 +140,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 ?>
 
-<form method="GET" class="mt-3" >
-    <div class="btn-group float-end" role="group" aria-label="Basic outlined example">
-        <button type="submit" name="prioritat" class="btn btn-outline-dark" value="prioritat">Prioritat</button>
-        <button type="submit" name="departament" class="btn btn-outline-dark" value="departament">Departament</button>
-        <button type="submit" name="data" class="btn btn-outline-dark" value="data">Data</button>
+<nav class="btn-group mt-3 px-5">
+    <div>
+        <button class="btn btn-light shadow" id="btn-incidencies" onclick="showWindow('incidencies')">Incidencies</button>
+        <button class="btn btn-light shadow" id="btn-informeTecnics" onclick="showWindow('informeTecnics')">Informe Tècnics</button>
+        <button class="btn btn-light shadow" id="btn-informeDepartamental" onclick="showWindow('informeDepartamental')">Informe Departamental</button>
+        <a class="btn btn-light shadow" id="btn-panellAcces" href="panellAcces.php">Panel d'Accés</a>
+    </div>
+</nav>
+
+<form method="GET" class="mt-3 px-5" >
+    <div class="btn-group float-end border border-dark" role="group" aria-label="Basic outlined example">
+        <button type="submit" name="prioritat" class="btn btn-light" value="prioritat">Prioritat</button>
+        <button type="submit" name="departament" class="btn btn-light" value="departament">Departament</button>
+        <button type="submit" name="data" class="btn btn-light" value="data">Data</button>
     </div>
 </form>
-
-<nav class="container mt-2">
-    <button class="btn btn-light" id="btn-incidencies" onclick="showWindow('incidencies')">Incidencies</button>
-    <button class="btn btn-light" id="btn-informeTecnics" onclick="showWindow('informeTecnics')">Informe Tècnics</button>
-    <button class="btn btn-light" id="btn-informeDepartamental" onclick="showWindow('informeDepartamental')">Informe Departamental</button>
-    <a class="btn btn-light" id="btn-panellAcces" href="panellAcces.php">Panel d'Accés</a>
-</nav>
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE MODIFICAR INCIDENCIAS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <div class="container">
