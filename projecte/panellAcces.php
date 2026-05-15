@@ -2,11 +2,21 @@
 require_once "header.php";
 require __DIR__ . '/vendor/autoload.php';
 
-$uri = getenv('MONGODB_URI') ?: 'mongodb://ususari:usuari1234@mongo:27017/';
+// =====================
+// ENV LOAD (.env)
+// =====================
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$uri = $_ENV['MONGODB_URI'] ?? 'mongodb://ususari:usuari1234@mongo:27017/';
+
 $client = new MongoDB\Client($uri);
 $db = $client->gestorIncidencies;
 $collection = $db->logs;
 
+// =====================
+// NOMBRES URL
+// =====================
 $nomsUrl = [
     '/index.php' => 'Inici',
     '/incidenciesPendent.php' => 'Incidències Pendents',
@@ -58,12 +68,8 @@ if ($fechaInici || $fechaFi) {
     }
 }
 
-// FIX IMPORTANTE PARA MONGODB
-if (empty($filtres)) {
-    $match = new stdClass();
-} else {
-    $match = (object)$filtres;
-}
+// FIX MONGODB MATCH
+$match = empty($filtres) ? new stdClass() : (object)$filtres;
 
 // =====================
 // CONSULTAS
@@ -166,7 +172,7 @@ $accesosPorDia = $collection->aggregate([
         </table>
     </div>
 
-    <h3>IPs més activas</h3>
+    <h3>IPs més actives</h3>
     <table class="table">
         <thead>
             <tr>
