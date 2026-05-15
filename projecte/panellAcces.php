@@ -7,32 +7,6 @@ $client = new MongoDB\Client($uri);
 $db = $client->gestorIncidencia;
 $collection = $db->logs;
 
-// Total de accesos
-$totalAccesos = $collection->countDocuments([]);
-
-// Páginas más visitadas
-$paginesVisitades = $collection->aggregate([
-    ['$group' => ['_id' => '$url', 'count' => ['$sum' => 1]]],
-    ['$sort' => ['count' => -1]],
-    ['$limit' => 10]
-]);
-
-// Usuarios más activos (IPs más frecuentes)
-$ipsMasActivas = $collection->aggregate([
-    ['$group' => ['_id' => '$ip', 'count' => ['$sum' => 1]]],
-    ['$sort' => ['count' => -1]],
-    ['$limit' => 10]
-]);
-
-// Accesos por día
-$accesosPorDia = $collection->aggregate([
-    ['$group' => [
-        '_id' => ['$dateToString' => ['format' => '%Y-%m-%d', 'date' => ['$toDate' => '$timestamp']]],
-        'count' => ['$sum' => 1]
-    ]],
-    ['$sort' => ['_id' => 1]]
-]);
-
 $nomsUrl = [
     '/index.php' => 'Inici',
     '/incidenciesPendent.php' => 'Incidències Pendents',
@@ -47,13 +21,87 @@ $nomsUrl = [
     '/professor.php' => 'Registrar Incidència',
     '/tecnic.php' => 'Llistat Tècnics',
 ];
+
+// Filtres
+
+$fechaInici = $_GET['fecha_inici'] ?? '';
+$fechaFi = $_GET['fecha_fi'] ?? '';
+$pagina = $_GET['pagina'] ?? '';
+
+$filtres = [];
+
+if($pagina) {
+    $filtres['url'] = $pagina;
+}
+
+
+// Total de accesos
+$totalAccesos = $collection->countDocuments($filtres);
+
+// Páginas más visitadas
+$paginesVisitades = $collection->aggregate([
+    ['$match' => (object)$filtres],
+    ['$group' => [
+        '_id' => '$url', 'count' => ['$sum' => 1]
+    ]],
+    ['$sort' => ['count' => -1]],
+    ['$limit' => 10]
+]);
+
+// Usuarios más activos (IPs más frecuentes)
+$ipsMasActivas = $collection->aggregate([
+    ['$match' => (object)$filtres],
+    ['$group' => [
+        '_id' => '$ip', 'count' => ['$sum' => 1]
+    ]],
+    ['$sort' => ['count' => -1]],
+    ['$limit' => 10]
+]);
+
+// Accesos por día
+$accesosPorDia = $collection->aggregate([
+    ['$match' => (object)$filtres],
+    ['$group' => [
+        '_id' => [
+            '$dateToString' => [
+                'format' => '%Y-%m-%d',
+                'date' => ['$toDate' => '$timestamp']
+            ]
+        ],
+        'count' => ['$sum' => 1]
+    ]],
+    ['$sort' => ['_id' => 1]]
+]);
+
 ?>
 
 <div class="container p-4 mb-5">
     <div class="text-center">
         <h2>Panell d'Accès</h2>
     </div>
+    <form method="GET" class="mb-4">
 
+        <select name="pagina">
+            <option value="">Todas las páginas</option>
+
+            <?php foreach ($nomsUrl as $url => $nom): ?>
+
+                <option value="<?php echo $url; ?>"
+                    <?php echo ($pagina == $url) ? 'selected' : ''; ?>>
+
+                    <?php echo $nom; ?>
+
+                </option>
+
+            <?php endforeach; ?>
+
+        </select>
+
+        <button type="submit">
+            Filtrar
+        </button>
+
+    </form>
     <div class="p-3" style="background-color: gainsboro;">
         <h3>Total d'Accesos: <?php echo $totalAccesos; ?></h3>
     </div>
