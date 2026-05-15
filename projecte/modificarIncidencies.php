@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <button class="btn btn-light shadow" id="btn-incidencies" onclick="showWindow('incidencies')">Incidencies</button>
         <button class="btn btn-light shadow" id="btn-informeTecnics" onclick="showWindow('informeTecnics')">Informe Tècnics</button>
         <button class="btn btn-light shadow" id="btn-informeDepartamental" onclick="showWindow('informeDepartamental')">Informe Departamental</button>
-        <a class="btn btn-light shadow" id="btn-panellAcces" href="panellAcces.php">Panel d'Accés</a>
+        <a class="btn btn-light shadow" id="btn-panellAcces" href="panellAcces.php">Panell d'Accés</a>
     </div>
 </nav>
 

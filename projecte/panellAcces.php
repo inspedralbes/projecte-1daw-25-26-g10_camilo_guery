@@ -21,7 +21,7 @@ $nomsUrl = [
     '/index.php' => 'Inici',
     '/incidenciesPendent.php' => 'Incidències Pendents',
     '/consultarIncidencia.php' => 'Consultar Incidència',
-    '/panellAcces.php' => 'Panell d Accès',
+    '/panellAcces.php' => 'Panell d Accés',
     '/actuacioIncidendia.php' => 'Registrar Actuació',
     '/confirmacio.php' => 'Confirmació de Registre',
     '/filtrarTecnic.php' => 'Filtrar Tecnics',
@@ -119,7 +119,7 @@ $accesosPorDia = $collection->aggregate([
 
 <div class="container p-4 mb-5">
     <div class="text-center">
-        <h2>Panell d'Accès</h2>
+        <h2>Panell d'Accés</h2>
     </div>
 
     <form method="GET" class="mb-4">
@@ -208,6 +208,93 @@ $accesosPorDia = $collection->aggregate([
         </tbody>
     </table>
 </div>
+
+<?php
+// MongoDB retorna cursor
+$accesosPorDia = $collection->aggregate([
+        ['$match' => (object)$filtres],
+    ['$group' => [
+        '_id' => [
+            '$dateToString' => [
+                'format' => '%Y-%m-%d',
+                'date' => ['$toDate' => '$timestamp']
+            ]
+        ],
+        'count' => ['$sum' => 1]
+    ]],
+    ['$sort' => ['_id' => 1]]
+]);
+
+// A ARRAY
+$accesosPorDia = iterator_to_array($accesosPorDia);
+
+$dades = json_encode($accesosPorDia);
+?>
+<hr class="m-5">
+<div class="container d-flex justify-content-center mb-5">
+    <h3>Gràfic d'Accesos per Día</h3>
+</div>
+<canvas id="grafic" width="1200" height="350" style="border:1px solid #ffffff;" class="container d-flex justify-content-center mb-5">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<script>
+const dades = <?php echo $dades; ?>;
+const canvas = document.getElementById('grafic');
+const ctx = canvas.getContext('2d');
+
+const altoMaximo = 200;
+const valorMaximo = 500;
+const espacioEntre = 80;
+const posicionIzquierda = 40;
+const posicionAbajo = 300;
+
+//blocs, dada (count) i data (_id)
+dades.forEach((dada, index) => {
+    const altura = (dada.count / valorMaximo) * altoMaximo;
+    const x = posicionIzquierda + index * espacioEntre;
+    const y = posicionAbajo - altura;
+    
+    
+    ctx.fillStyle = '#2077B4';
+    ctx.fillRect(x + 5, y, 30, altura);
+
+    ctx.fillStyle = '#103d5e';
+    ctx.font = '14px Arial';
+    ctx.fillText(dada.count, x + 5, y - 5);
+
+    ctx.fillStyle = 'black';
+    ctx.font = '14px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(dada._id, x + 20, posicionAbajo + 20);
+});            
+
+const valores = [100, 200, 300, 400, 500];
+
+//numeros verticals
+valores.forEach(num => {
+    const y = posicionAbajo - (num / valorMaximo) * altoMaximo;
+
+    ctx.fillStyle = '#000';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText(num, posicionIzquierda - 10, y + 5);
+});
+
+// Eix vertical
+ctx.strokeStyle = '#000';
+ctx.lineWidth = 1;
+ctx.beginPath();
+ctx.moveTo(posicionIzquierda - 5, 40);
+ctx.lineTo(posicionIzquierda - 5, posicionAbajo);
+ctx.stroke();
+
+// Eix horitzontal
+ctx.beginPath();
+ctx.moveTo(posicionIzquierda - 5, posicionAbajo);
+ctx.lineTo(1150, posicionAbajo);
+ctx.stroke();
+</script>
 
 <?php
 include_once "footer.php";
