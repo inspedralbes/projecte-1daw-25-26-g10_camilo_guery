@@ -1,3 +1,4 @@
 .idea/
 .github/
 projecte/vendor/
+projecte/.env
