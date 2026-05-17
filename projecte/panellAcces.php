@@ -122,27 +122,46 @@ $accesosPorDia = $collection->aggregate([
         <h2>Panell d'Accés</h2>
     </div>
 
-    <form method="GET" class="mb-4">
+    <form method="GET" class="mb-4 p-3 border rounded-3 shadow-sm bg-light">
 
-        <select name="pagina">
-            <option value="">Todas las páginas</option>
+        <div class="row g-3 align-items-end">
 
-            <?php foreach ($nomsUrl as $url => $nom): ?>
-                <option value="<?php echo $url; ?>"
-                    <?php echo ($pagina == $url) ? 'selected' : ''; ?>>
-                    <?php echo $nom; ?>
-                </option>
-            <?php endforeach; ?>
+            <div class="col-md-4">
+                <label class="form-label small fw-semibold">Pàgina</label>
+                <select name="pagina" class="form-select form-select-sm">
+                    <option value="">Totes les pàgines</option>
 
-        </select>
+                    <?php foreach ($nomsUrl as $url => $nom): ?>
+                        <option value="<?php echo $url; ?>"
+                            <?php echo ($pagina == $url) ? 'selected' : ''; ?>>
+                            <?php echo $nom; ?>
+                        </option>
+                    <?php endforeach; ?>
 
-        <label>Desde:</label>
-        <input type="date" name="fecha_inici" value="<?php echo $fechaInici; ?>">
+                </select>
+            </div>
 
-        <label>Hasta:</label>
-        <input type="date" name="fecha_fi" value="<?php echo $fechaFi; ?>">
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">Des de</label>
+                <input type="date" name="fecha_inici"
+                    value="<?php echo $fechaInici; ?>"
+                    class="form-control form-control-sm">
+            </div>
 
-        <button type="submit">Filtrar</button>
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">Fins a</label>
+                <input type="date" name="fecha_fi"
+                    value="<?php echo $fechaFi; ?>"
+                    class="form-control form-control-sm">
+            </div>
+
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    Filtrar
+                </button>
+            </div>
+
+        </div>
 
     </form>
 

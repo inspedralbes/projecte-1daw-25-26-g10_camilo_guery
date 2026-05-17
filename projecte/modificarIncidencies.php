@@ -72,7 +72,6 @@ if (isset($_POST["tipusInforme"])) {
 }
 
 ?>
-<!-- funcion para filtrar orden -->
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
@@ -157,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 </form>
 
-<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE MODIFICAR INCIDENCIAS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <div class="container">
     <div id="incidencies" class="window-info active">
         <form action="actualitzar.php" method="POST">
@@ -192,7 +190,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 <td><?php echo $incidencia["data"] ?></td>
                                 <td><?php echo $incidencia["nomDepartament"] ?></td>
                                 <td>
-                                    <select name="idTecnic[<?php echo $incidencia["idIncidencia"]; ?>]">
+                                    <label for="idTecnic-<?php echo $incidencia["idIncidencia"]; ?>" class="visually-hidden">Tècnic</label>
+                                    <select id="idTecnic-<?php echo $incidencia["idIncidencia"]; ?>" name="idTecnic[<?php echo $incidencia["idIncidencia"]; ?>]">
                                         <option value="" <?php echo ($incidencia["idTecnic"] == null) ? "selected" : ""; ?>>
                                             Sin asignar
                                         </option>
@@ -205,7 +204,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="idTipus[<?php echo $incidencia["idIncidencia"]; ?>]">
+                                    <label for="idTipus-<?php echo $incidencia["idIncidencia"]; ?>" class="visually-hidden">Tipus</label>
+                                    <select id="idTipus-<?php echo $incidencia["idIncidencia"]; ?>" name="idTipus[<?php echo $incidencia["idIncidencia"]; ?>]">
                                         <option value="" <?php echo ($incidencia["idTipus"] == null) ? "selected" : ""; ?>>
                                             Sin asignar
                                         </option>
@@ -219,7 +219,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 </td>
                                 <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
                                 <td>
-                                    <select name="prioritat[<?php echo $incidencia["idIncidencia"]; ?>]">
+                                    <label for="prioritat-<?php echo $incidencia["idIncidencia"]; ?>" class="visually-hidden">Prioritat</label>
+                                    <select id="prioritat-<?php echo $incidencia["idIncidencia"]; ?>" name="prioritat[<?php echo $incidencia["idIncidencia"]; ?>]">
                                         <option value="" <?php echo ($incidencia["prioritat"] == null) ? "selected" : ""; ?>>
                                             Sin asignar
                                         </option>
@@ -244,22 +245,41 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         </form>
     </div>
 
-    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE INFORME TECNICOS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
     <div id="informeTecnics" class="window-info">
         <h3>Informe de Tècnics</h3>
-        <form action="modificarIncidencies.php" method="POST">
+
+        <?php
+        $totalTecnic = count($incidenciasTecnicos);
+        $cerradasTecnic = 0;
+        foreach ($incidenciasTecnicos as $i) {
+            if (!empty($i["dataFinalitzacio"])) $cerradasTecnic++;
+        }
+        $pendientesTecnic = $totalTecnic - $cerradasTecnic;
+        ?>
+
+        <form action="modificarIncidencies.php" method="POST" class="my-2 d-inline-block">
             <input type="hidden" name="tipusInforme" value="informeTecnics">
-            <select name="idTecnic">
-                <?php foreach ($tecnicos as $tecnico) { ?>
-                    <option value="<?php echo $tecnico["idTecnic"]; ?>"
-                    <?php echo ($tecnico["idTecnic"] == $idTecnicSeleccionado) ? "selected" : ""; ?>>
-                        <?php echo htmlspecialchars($tecnico["nom"]); ?>
-                    </option>
-                <?php } ?>
-            </select>
-            <input type="submit" value="Filtrar">
+
+            <div class="border border-dark rounded-3 shadow-sm p-2 bg-light d-flex align-items-center gap-2">
+
+                <label for="idTecnic" class="mb-0 small fw-semibold">
+                    Tècnic:
+                </label>
+
+                <select name="idTecnic" id="idTecnic" class="form-select form-select-sm w-auto">
+                    <?php foreach ($tecnicos as $tecnico) { ?>
+                        <option value="<?php echo $tecnico["idTecnic"]; ?>"
+                        <?php echo ($tecnico["idTecnic"] == $idTecnicSeleccionado) ? "selected" : ""; ?>>
+                            <?php echo htmlspecialchars($tecnico["nom"]); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+
+                <button type="submit" class="btn btn-sm btn-primary">Filtrar</button>
+
+            </div>
         </form>
+
         <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
             <div class="table-responsive">
                 <table class="table mb-0">
@@ -275,16 +295,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    foreach ($incidenciasTecnicos as $incidencia) { 
-
-                        $prioritat = match($incidencia["prioritat"]) {
-                            'Alta' => 'table-danger',
-                            'Mitja' => 'table-warning',
-                            'Baixa' => 'table-info',
-                            default => 'table-light'
-                        };
-                    ?>
+                        <?php foreach ($incidenciasTecnicos as $incidencia) { 
+                            $prioritat = match($incidencia["prioritat"]) {
+                                'Alta' => 'table-danger',
+                                'Mitja' => 'table-warning',
+                                'Baixa' => 'table-info',
+                                default => 'table-light'
+                            };
+                        ?>
                         <tr class="<?php echo $prioritat; ?>">
                             <td><?php echo $incidencia["idIncidencia"] ?></td>
                             <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
@@ -294,29 +312,54 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
                             <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
                         </tr>
-                    <?php } ?>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <div class="p-3 border rounded bg-light">
+            Total: <?php echo $totalTecnic; ?> |
+            Cerradas: <?php echo $cerradasTecnic; ?> |
+            Pendientes: <?php echo $pendientesTecnic; ?>
+        </div>
     </div>
 
-    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE CONSUMO POR DEPARTAMENTO ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-    
     <div id="informeDepartamental" class="window-info">
-         <h3>Informe de consum per departament</h3>
-        <form action="modificarIncidencies.php" method="POST">
+        <h3>Informe de consum per departament</h3>
+
+        <?php
+        $totalDep = count($incidenciasDepartamentos);
+        $cerradasDep = 0;
+        foreach ($incidenciasDepartamentos as $i) {
+            if (!empty($i["dataFinalitzacio"])) $cerradasDep++;
+        }
+        $pendientesDep = $totalDep - $cerradasDep;
+        ?>
+
+        <form action="modificarIncidencies.php" method="POST" class="my-2 d-inline-block">
             <input type="hidden" name="tipusInforme" value="informeDepartamental">
-            <select name="idDepartament">
-                <?php foreach ($departamentos as $departamento) { ?>
-                    <option value="<?php echo $departamento["idDepartament"]; ?>"
-                    <?php echo ($departamento["idDepartament"] == $idDepartamentSeleccionado) ? "selected" : ""; ?>>
-                        <?php echo htmlspecialchars($departamento["nom"]); ?>
-                    </option>
-                <?php } ?>
-            </select>
-            <input type="submit" value="Filtrar">
+
+            <div class="border border-dark rounded-3 shadow-sm p-2 bg-light d-flex align-items-center gap-2">
+
+                <label for="idDepartament" class="mb-0 small fw-semibold">
+                    Dept:
+                </label>
+
+                <select name="idDepartament" id="idDepartament" class="form-select form-select-sm w-auto">
+                    <?php foreach ($departamentos as $departamento) { ?>
+                        <option value="<?php echo $departamento["idDepartament"]; ?>"
+                        <?php echo ($departamento["idDepartament"] == $idDepartamentSeleccionado) ? "selected" : ""; ?>>
+                            <?php echo htmlspecialchars($departamento["nom"]); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+
+                <button type="submit" class="btn btn-sm btn-primary">Filtrar</button>
+
+            </div>
         </form>
+
         <div class="border border-dark rounded-3 overflow-hidden w-100 my-5 shadow">
             <div class="table-responsive">
                 <table class="table mb-0">
@@ -332,9 +375,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        foreach ($incidenciasDepartamentos as $incidencia) { 
-
+                        <?php foreach ($incidenciasDepartamentos as $incidencia) { 
                             $prioritat = match($incidencia["prioritat"]) {
                                 'Alta' => 'table-danger',
                                 'Mitja' => 'table-warning',
@@ -342,24 +383,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 default => 'table-light'
                             };
                         ?>
-                            <tr class="<?php echo $prioritat; ?>">
-                                <td><?php echo $incidencia["idIncidencia"] ?></td>
-                                <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
-                                <td><?php echo $incidencia["data"] ?></td>
-                                <td><?php echo htmlspecialchars($incidencia["nomTecnic"] ?? "Sin asignar") ?></td>
-                                <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
-                                <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
-                                <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
-                            </tr>
+                        <tr class="<?php echo $prioritat; ?>">
+                            <td><?php echo $incidencia["idIncidencia"] ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["descripcio"]) ?></td>
+                            <td><?php echo $incidencia["data"] ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["nomTecnic"] ?? "Sin asignar") ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
+                            <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                            <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
+                        </tr>
                         <?php } ?>
                     </tbody>
                 </table>
             </div> 
         </div>
+
+        <div class="p-3 border rounded bg-light">
+            Total: <?php echo $totalDep; ?> |
+            Cerradas: <?php echo $cerradasDep; ?> |
+            Pendientes: <?php echo $pendientesDep; ?>
+        </div>
     </div>
 
-    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE PANEL DE ACCESO---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-    
     <div class="d-flex justify-content-start"> 
         <a class="btn btn-primary mt-3" href="index.php">Tornar enrere</a>
     </div>
