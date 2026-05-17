@@ -1,5 +1,5 @@
 <?php
-$titulo = "Gestor d'Incidències - Modificació d'Incidències";
+$titulo = "Gestor d'Incidències | Modificació d'Incidències";
 include_once "header.php";
 $mysqli = include_once "conexio.php";
 $resultadoIncidencia = $mysqli->query("SELECT i.idIncidencia, i.descripcio, i.data,
@@ -156,6 +156,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 </form>
 
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- SECCION DE MODIFICAR INCIDENCIA ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
 <div class="container">
     <div id="incidencies" class="window-info active">
         <form action="actualitzar.php" method="POST">
@@ -244,6 +246,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <input type="submit" value="Guardar cambios" class="btn btn-success">
         </form>
     </div>
+    
+        <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------- INFORME DE CONSUMO POR DEPARTAMENTO -------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
     <div id="informeTecnics" class="window-info">
         <h3>Informe de Tècnics</h3>
@@ -324,6 +328,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             Pendientes: <?php echo $pendientesTecnic; ?>
         </div>
     </div>
+
+    <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------- INFORME DE CONSUMO POR DEPARTAMENTO -------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
 
     <div id="informeDepartamental" class="window-info">
         <h3>Informe de consum per departament</h3>

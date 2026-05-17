@@ -1,5 +1,5 @@
 <?php 
-$titulo = "Gestor d'Incidències - Professor";
+$titulo = "Gestor d'Incidències | Professor";
 include_once "header.php"; 
 $mysqli = include_once "conexio.php";
 $resultadoDepartaments = $mysqli->query("SELECT idDepartament, nom FROM DEPARTAMENT");

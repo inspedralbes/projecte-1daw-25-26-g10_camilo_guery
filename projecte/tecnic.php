@@ -1,5 +1,5 @@
 <?php 
-$titulo = "Gestor d'Incidències - Llistat de Tècnics";
+$titulo = "Gestor d'Incidències | Tècnics";
 include_once "header.php"; 
 $mysqli = include_once "conexio.php";
 $resultadoTecnicos = $mysqli->query("SELECT idTecnic, nom FROM TECNIC");

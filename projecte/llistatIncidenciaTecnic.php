@@ -22,7 +22,7 @@ $sentencia2->execute();
 $result2 = $sentencia2->get_result();
 $tecnico = $result2->fetch_assoc();
 
-$titulo = "Llistat d'Incidències" . " - " . $tecnico["nom"];
+$titulo = " Gestor d'Incidències | Tècnics" . " | " . $tecnico["nom"];
 
 include_once "header.php";
 
