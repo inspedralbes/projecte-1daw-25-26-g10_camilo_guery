@@ -1,153 +1,96 @@
-# 📊 Documentació MongoDB - Panell d'Accés
+# 📊 Panell d'Accés - Documentació MongoDB
 
-En aquesta pàgina s'utilitza MongoDB per emmagatzemar i analitzar els logs d'accés de l'aplicació.  
-S'han implementat diferents pipelines d'agregació per obtenir estadístiques sobre les visites i els accessos.
+S'ha utilitzat MongoDB per analitzar els logs d'accés de l'aplicació.
+A més s'han implementat diferents pipelines d'agregació per obtenir estadístiques sobre l'ús del sistema.
 
 ---
 
-# 🔎 Consultes principals
-
-- Total d'accessos
+## 🔎 Consultes principals
 - Pàgines més visitades
 - IPs més actives
 - Accessos per dia
+- Filtres per pàgina i dates
 
 ---
 
-# 📋 1 - Pàgines més visitades
+## 📋 1- Pàgines més visitades
 
-Aquest pipeline agrupa tots els accessos segons la URL visitada i calcula quantes vegades s'ha accedit a cada pàgina.  
-Posteriorment ordena els resultats de major a menor nombre de visites i limita el resultat a les 10 pàgines més visitades.
+Aquest pipeline agrupa els accessos per URL i calcula quantes vegades s'ha visitat cada pàgina.
+Després ordena els resultats de més a menys visites i mostra les 10 primeres.
 
-```php
+
 $paginesVisitades = $collection->aggregate([
-    ['$match' => $match],
-    ['$group' => [
-        '_id' => '$url',
-        'count' => ['$sum' => 1]
-    ]],
-    ['$sort' => ['count' => -1]],
-    ['$limit' => 10]
-]);
-🔹 Funcionament del pipeline
-$match
-
-Filtra els documents segons els criteris seleccionats per l’usuari:
-
-Pàgina concreta
-Data inicial
-Data final
-['$match' => $match]
-$group
-
-Agrupa els registres per URL i compta el nombre d'accessos.
-
+['$match' => $match],
 ['$group' => [
-    '_id' => '$url',
-    'count' => ['$sum' => 1]
-]]
-$sort
-
-Ordena les pàgines de més a menys visitades.
-
-['$sort' => ['count' => -1]]
-$limit
-
-Limita el resultat a les 10 pàgines més visitades.
-
+'_id' => '$url',
+'count' => ['$sum' => 1]
+]],
+['$sort' => ['count' => -1]],
 ['$limit' => 10]
-🌐 2 - IPs més actives
+]);
 
-Aquest pipeline obté les IPs amb més activitat dins del sistema.
+
+---
+
+## 🌐 2- IPs més actives
+
+Aquest pipeline agrupa els logs per IP i calcula quines IPs han realitzat més accessos al sistema.
+Posteriorment ordena i mostra les 10 IPs més actives.
+
 
 $ipsMasActivas = $collection->aggregate([
-    ['$match' => $match],
-    ['$group' => [
-        '_id' => '$ip',
-        'count' => ['$sum' => 1]
-    ]],
-    ['$sort' => ['count' => -1]],
-    ['$limit' => 10]
-]);
-🔹 Funcionament del pipeline
-$match
-
-Aplica els filtres seleccionats.
-
-['$match' => $match]
-$group
-
-Agrupa per IP i compta els accessos.
-
+['$match' => $match],
 ['$group' => [
-    '_id' => '$ip',
-    'count' => ['$sum' => 1]
-]]
-$sort
-
-Ordena les IPs de més activa a menys activa.
-
-['$sort' => ['count' => -1]]
-$limit
-
-Mostra només les 10 IPs amb més activitat.
-
+'_id' => '$ip',
+'count' => ['$sum' => 1]
+]],
+['$sort' => ['count' => -1]],
 ['$limit' => 10]
-📅 3 - Accessos per dia
+]);
 
-Aquest pipeline genera estadístiques diàries dels accessos al sistema.
+
+---
+
+## 📅 3- Accessos per dia
+
+Aquest pipeline agrupa els accessos per data i genera estadístiques diàries.
+Converteix el timestamp a format data per poder agrupar correctament.
+
 
 $accesosPorDia = $collection->aggregate([
-    ['$match' => $match],
-    ['$group' => [
-        '_id' => [
-            '$dateToString' => [
-                'format' => '%Y-%m-%d',
-                'date' => ['$toDate' => '$timestamp']
-            ]
-        ],
-        'count' => ['$sum' => 1]
-    ]],
-    ['$sort' => ['_id' => 1]]
+['$match' => $match],
+['$group' => [
+'_id' => [
+'$dateToString' => [
+'format' => '%Y-%m-%d',
+'date' => ['$toDate' => '$timestamp']
+]
+],
+'count' => ['$sum' => 1]
+]],
+['$sort' => ['_id' => 1]]
 ]);
-🔹 Funcionament del pipeline
-$match
 
-Filtra els registres segons els criteris seleccionats.
+
+---
+
+## 📌 4- Filtre general ($match)
+
+Aquest filtre s'aplica a tots els pipelines per restringir les dades segons:
+- pàgina seleccionada
+- rang de dates
+- altres paràmetres
+
 
 ['$match' => $match]
-$group
 
-Agrupa els accessos per data.
 
-Converteix timestamp a data amb $toDate
-Formata la data amb $dateToString
-['$group' => [
-    '_id' => [
-        '$dateToString' => [
-            'format' => '%Y-%m-%d',
-            'date' => ['$toDate' => '$timestamp']
-        ]
-    ],
-    'count' => ['$sum' => 1]
-]]
-$sort
+---
 
-Ordena cronològicament els resultats.
+## 📊 Resum
 
-['$sort' => ['_id' => 1]]
-📈 Gràfic d'accessos
-
-Les dades del pipeline es converteixen en array:
-
-$accesosPorDia = iterator_to_array($accesosPorDia);
-
-Després es passen a JSON per JavaScript:
-
-$dades = json_encode($accesosPorDia);
-
-Aquestes dades s'utilitzen per generar un gràfic amb <canvas> que mostra:
-
-Accessos per dia
-Evolució temporal
-Estadístiques visuals d'activitat
+Els pipelines permeten obtenir estadístiques clares sobre:
+- ús de l'aplicació
+- pàgines més consultades
+- activitat per IP
+- evolució diària dels accessos
