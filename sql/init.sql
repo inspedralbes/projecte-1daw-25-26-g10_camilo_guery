@@ -41,6 +41,6 @@ CREATE TABLE ACTUACIO(
     FOREIGN KEY(idIncidencia) REFERENCES INCIDENCIA(idIncidencia)
 );
 
-INSERT INTO TIPUS(nom) VALUES ('Hardware'), ('Software');
+INSERT INTO TIPUS(nom) VALUES ('Hardware'), ('Software'), ('Red y Conectividad'), ('Seguridad');
 INSERT INTO DEPARTAMENT(nom) VALUES ('Programacio'), ('Sistemes'), ('Base de Dades');
 INSERT INTO TECNIC(nom) VALUES ('Ermengol'), ('Gerard'), ('Alvaro'), ('Toni');

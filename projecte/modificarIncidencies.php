@@ -219,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                         <?php } ?>
                                     </select>
                                 </td>
-                                <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                                <td><?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzada"; ?></td>
                                 <td>
                                     <label for="prioritat-<?php echo $incidencia["idIncidencia"]; ?>" class="visually-hidden">Prioritat</label>
                                     <select id="prioritat-<?php echo $incidencia["idIncidencia"]; ?>" name="prioritat[<?php echo $incidencia["idIncidencia"]; ?>]">
@@ -313,7 +313,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             <td><?php echo $incidencia["data"] ?></td>
                             <td><?php echo htmlspecialchars($incidencia["nomDepartament"]) ?></td>
                             <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
-                            <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                            <td><?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzada"; ?></td>
                             <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
                         </tr>
                         <?php } ?>
@@ -396,7 +396,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             <td><?php echo $incidencia["data"] ?></td>
                             <td><?php echo htmlspecialchars($incidencia["nomTecnic"] ?? "Sin asignar") ?></td>
                             <td><?php echo htmlspecialchars($incidencia["nomTipus"] ?? "Sin asignar") ?></td>
-                            <td><?php echo $incidencia["dataFinalitzacio"] ?></td>
+                            <td><?php echo $incidencia["dataFinalitzacio"] ?? "No finalitzada"; ?></td>
                             <td><?php echo htmlspecialchars($incidencia["prioritat"] ?? "Sin asignar") ?></td>
                         </tr>
                         <?php } ?>

@@ -8,9 +8,9 @@ include_once "header.php";
 
         <div class="d-flex justify-content-center align-items-center">
             <div class="d-grid gap-3" style="width: 300px;">
-                <a href="professor.php" class="btn btn-info">Profesor</a>
-                <a href="tecnic.php" class="btn btn-info">Tècnic</a>
-                <a href="modificarIncidencies.php" class="btn btn-info">Responsable informàtic</a>
+                <a href="professor.php" class="btn btn-info py-3 fw-bold">Profesor</a>
+                <a href="tecnic.php" class="btn btn-info py-3 fw-bold">Tècnic</a>
+                <a href="modificarIncidencies.php" class="btn btn-info py-3 fw-bold">Responsable informàtic</a>
             </div>
         </div>
 
