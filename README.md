@@ -41,3 +41,64 @@ El nucli del sistema està completament desenvolupat i supera les proves de func
 Com a línies de treball futures per fer créixer el programari, es plantegen:
 *   **Evolució Estètica:** Polir detalls visuals de la interfície de l'usuari per aconseguir un disseny més modern i intuïtiu.
 *   **Noves Funcionalitats:** Implementar sistemes de notificacions automàtiques per correu electrònic o panells gràfics estadístics més avançats per als responsables.
+
+
+# 🗺️ Guia de Desplegament i Requisits
+
+Per posar en marxa el **Gestor d'Incidències**, l'ecosistema utilitza una arquitectura en contenidors que facilita la seva execució immediata sense configuracions manuals al sistema local.
+
+---
+
+## 📌 Requisits del Sistema
+
+Abans de començar, assegura't de disposar del següent programari:
+*   **Motor de Contenidors:** Docker juntament amb la utilitat Docker Compose.
+*   **Entorn d'Execució:** PHP (versió 8.0 o posterior recomanada per compatibilitat).
+*   **Client Web:** Qualsevol navegador d'última generació (Chrome, Firefox, Edge).
+
+---
+
+## ⌨️ Comandes Obligatòries
+
+Abans de llançar l'aplicació per primera vegada, és indispensable preparar les dependències del codi font. Des del terminal, accedeix a la ruta de l'aplicació i executa els passos següents:
+
+1.  **Navegar fins al directori de treball:**
+    ```bash
+    cd /projecte
+    ```
+2.  **Descarregar els paquets del projecte:**
+    ```bash
+    composer install
+    ```
+3.  **Instal·lar el gestor de configuració:**
+    ```bash
+    composer require vlucas/phpdotenv
+    ```
+    *(Aquesta llibreria és necessària per permetre que l'aplicació llegeixi correctament les variables del sistema).*
+
+---
+
+## 📦 Arquitectura de l'Entorn (Docker)
+
+El projecte s'aixeca de forma aïllada en una xarxa local virtualitzada que interconnecta directament els següents serveis:
+
+1.  **Capa d'Aplicació:** Servidor web HTTP Apache configurat per processar la lògica de programació en PHP.
+2.  **Estructura Relacional:** Motor MySQL per emmagatzemar la informació de base (com el control d'usuaris, rols i l'estat dels tiquets).
+3.  **Magatzem NoSQL:** Base de dades MongoDB dedicada en exclusiva al registre de l'historial d'accés, auditoria i mètriques.
+4.  **Utilitats Integrades:** Eines de control gràfic per interactuar amb les dades fàcilment des del navegador.
+
+> 💡 **Inici ràpid:** Només cal llançar l'orquestrador de Docker des de l'arrel de l'espai de treball per activar tots els mòduls i carregar la URL local.
+
+---
+
+## 🎛️ Panells de Control de Dades
+
+Depenent de l'entorn de treball, les eines per visualitzar i modificar les bases de dades es divideixen d'aquesta manera:
+
+### ⚙️ Entorn de Proves (Local)
+*   **Interfície MySQL:** Gestionat de manera lleugera amb **Adminer** accessible a [http://localhost:8081](http://localhost:8081).
+*   **Interfície MongoDB:** Monitoritzat mitjançant la consola web de **mongo-express** a [http://localhost:8082](http://localhost:8082).
+
+### ☁️ Entorn d'Explotació (Producció)
+*   **Interfície MySQL:** Administrat mitjançant el programari tradicional **phpMyAdmin** de la infraestructura del centre.
+*   **Interfície MongoDB:** Allotjat directament de forma externa a la plataforma **MongoDB Atlas** al núvol.
