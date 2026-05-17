@@ -256,7 +256,7 @@ $dades = json_encode($accesosPorDia);
 <canvas id="grafic" width="1200" height="350" style="border:1px solid #ffffff;" class="container d-flex justify-content-center mb-5">
 Your browser does not support the HTML canvas tag.
 </canvas>
-
+<a class="btn btn-primary m-4" href="modificarIncidencies.php">Tornar enrere</a>
 <script>
 const dades = <?php echo $dades; ?>;
 const canvas = document.getElementById('grafic');
@@ -314,7 +314,6 @@ ctx.moveTo(posicionIzquierda - 5, posicionAbajo);
 ctx.lineTo(1150, posicionAbajo);
 ctx.stroke();
 </script>
-
 <?php
 include_once "footer.php";
 ?>

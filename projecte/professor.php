@@ -32,7 +32,7 @@ $departaments = $resultadoDepartaments->fetch_all(MYSQLI_ASSOC);
             <form action="consultarIncidencia.php" method="POST">
                 <div class="input-group mt-2">
                     <label class="input-group-text" for="idIncidencia">ID</label>
-                    <input type="text" class="form-control" name="idIncidencia" id="idIncidencia" placeholder="ID d'Incidencia: ">
+                    <input type="text" class="form-control" name="idIncidencia" id="idIncidencia" placeholder="ID d'Incidencia: " required>
                 </div>
                 <br>
                 <button type="submit" value="Enviar" class="btn btn-primary">Buscar</button>
@@ -40,5 +40,8 @@ $departaments = $resultadoDepartaments->fetch_all(MYSQLI_ASSOC);
             </form>
         </div>
     </div>
+    <div class="text-center">
+        <a href="index.php" class="btn btn-primary m-2">Tornar Enrere</a>
+    <div>
 </div>
 <?php include_once "footer.php"; ?>

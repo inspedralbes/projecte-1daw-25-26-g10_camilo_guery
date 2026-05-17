@@ -37,7 +37,7 @@ error_reporting(E_ALL);
             </a>
         </div>
     </header>
-<main>
+    <main>
 
 <?php
 include_once "logger.php";

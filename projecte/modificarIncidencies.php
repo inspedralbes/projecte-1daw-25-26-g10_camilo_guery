@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 </nav>
 
-<form method="GET" class="mt-3 px-5" >
+<form method="GET" class="px-5">
     <div class="btn-group float-end border border-dark" role="group" aria-label="Basic outlined example">
         <button type="submit" name="prioritat" class="btn btn-light" value="prioritat">Prioritat</button>
         <button type="submit" name="departament" class="btn btn-light" value="departament">Departament</button>
@@ -243,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     </table>
                 </div>
             </div>
-            <input type="submit" value="Guardar cambios" class="btn btn-success">
+            <input type="submit" value="Guardar canvis" class="btn btn-success">
         </form>
     </div>
     

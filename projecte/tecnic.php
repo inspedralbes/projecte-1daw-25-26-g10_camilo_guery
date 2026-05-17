@@ -15,6 +15,7 @@ $tecnicos = $resultadoTecnicos->fetch_all(MYSQLI_ASSOC);
             <?php foreach ($tecnicos as $tecnico) { ?>
                <a href="llistatIncidenciaTecnic.php?idTecnic=<?php echo $tecnico["idTecnic"] ?>" class="btn btn-warning">  <?php echo $tecnico["nom"]; ?> </a>
             <?php } ?>
+            <a class="btn btn-primary m-4" href="index.php">Tornar enrere</a>
         </div>
     </div>    
 <?php include_once "footer.php"; ?>
