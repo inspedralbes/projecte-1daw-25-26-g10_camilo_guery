@@ -1,96 +1,70 @@
-# 📊 Panell d'Accés - Documentació MongoDB
+# 📊 Documentació de Pipelines d'Agregació (MongoDB)
 
-S'ha utilitzat MongoDB per analitzar els logs d'accés de l'aplicació.
-A més s'han implementat diferents pipelines d'agregació per obtenir estadístiques sobre l'ús del sistema.
-
----
-
-## 🔎 Consultes principals
-- Pàgines més visitades
-- IPs més actives
-- Accessos per dia
-- Filtres per pàgina i dates
+Aquest document detalla els processos d'agregació utilitzats per generar les estadístiques del **Panell d'Accés**. Tots els pipelines incorporen un estadi de filtratge dinàmic previ.
 
 ---
 
-## 📋 1- Pàgines més visitades
+## 🌐 1- Pàgines més visitades
+Aquest pipeline analitza quines seccions de l'aplicació tenen més trànsit. Agrupa els documents per la seva URL, calcula el total de visites per cada una i retorna el **Top 10** en ordre descendent.
 
-Aquest pipeline agrupa els accessos per URL i calcula quantes vegades s'ha visitat cada pàgina.
-Després ordena els resultats de més a menys visites i mostra les 10 primeres.
-
-
+```php
 $paginesVisitades = $collection->aggregate([
-['$match' => $match],
-['$group' => [
-'_id' => '$url',
-'count' => ['$sum' => 1]
-]],
-['$sort' => ['count' => -1]],
-['$limit' => 10]
+    ['$match' => $match], // Filtre dinàmic aplicat per l'usuari
+    ['$group' => [
+        '_id' => '$url',
+        'count' => ['$sum' => 1] // Suma 1 per cada coincidència
+    ]],
+    ['$sort' => ['count' => -1]], // Ordena de més a menys visites
+    ['$limit' => 10] // Limita el resultat als 10 primers
 ]);
-
+```
 
 ---
 
-## 🌐 2- IPs més actives
+## 💻 2- IPs més actives
+Pipeline dissenyat per identificar l'origen de les peticions. Agrupa els registres per l'adreça IP del client per detectar quins nodes estan generant més activitat al servidor de logs.
 
-Aquest pipeline agrupa els logs per IP i calcula quines IPs han realitzat més accessos al sistema.
-Posteriorment ordena i mostra les 10 IPs més actives.
-
-
+```php
 $ipsMasActivas = $collection->aggregate([
-['$match' => $match],
-['$group' => [
-'_id' => '$ip',
-'count' => ['$sum' => 1]
-]],
-['$sort' => ['count' => -1]],
-['$limit' => 10]
+    ['$match' => $match],
+    ['$group' => [
+        '_id' => '$ip',
+        'count' => ['$sum' => 1]
+    ]],
+    ['$sort' => ['count' => -1]],
+    ['$limit' => 10]
 ]);
-
+```
 
 ---
 
-## 📅 3- Accessos per dia
+## 📅 3- Accessos cronològics per dia
+Aquest pipeline realitza una transformació de dades. Converteix el camp `timestamp` (BSON) a un format de cadena llegible (`YYYY-MM-DD`) per poder agrupar els accessos per dies naturals i generar una línia temporal.
 
-Aquest pipeline agrupa els accessos per data i genera estadístiques diàries.
-Converteix el timestamp a format data per poder agrupar correctament.
-
-
+```php
 $accesosPorDia = $collection->aggregate([
-['$match' => $match],
-['$group' => [
-'_id' => [
-'$dateToString' => [
-'format' => '%Y-%m-%d',
-'date' => ['$toDate' => '$timestamp']
-]
-],
-'count' => ['$sum' => 1]
-]],
-['$sort' => ['_id' => 1]]
+    ['$match' => $match],
+    ['$group' => [
+        '_id' => [
+            '$dateToString' => [
+                'format' => '%Y-%m-%d',
+                'date' => ['$toDate' => '$timestamp'] // Conversió a objecte Date
+            ]
+        ],
+        'count' => ['$sum' => 1]
+    ]],
+    ['$sort' => ['_id' => 1]] // Ordenació cronològica ascendent
 ]);
-
-
----
-
-## 📌 4- Filtre general ($match)
-
-Aquest filtre s'aplica a tots els pipelines per restringir les dades segons:
-- pàgina seleccionada
-- rang de dates
-- altres paràmetres
-
-
-['$match' => $match]
-
+```
 
 ---
 
-## 📊 Resum
-
-Els pipelines permeten obtenir estadístiques clares sobre:
-- ús de l'aplicació
-- pàgines més consultades
-- activitat per IP
-- evolució diària dels accessos
+## ⚙️ Estadi Comú: $match
+Tots els pipelines utilitzen la variable `$match` com a primer estadi. Aquesta variable conté l'objecte de filtres (dates i pàgina) per optimitzar la consulta i processar només les dades sol·licitades.
+```php
+// Exemple de l'estat del filtre abans de l'agregació
+$match = (object)[
+    'url' => '/index.php',
+    'timestamp' => ['$gte' => UTCDateTime, '$lte' => UTCDateTime]
+];
+```
