@@ -1,0 +1,75 @@
+services:
+  # Servidor web Apache amb PHP i suport MySQL
+  web:
+    image: ebota/daw:apache_php_mysql_mongodb
+    container_name: incidencia-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./projecte:/var/www/html
+    command: /bin/bash -c "composer install --no-interaction --no-plugins --no-scripts; apache2-foreground"
+    depends_on:
+      - db
+    environment:
+      MONGODB_URI: mongodb://usuari:usuari1234@mongo:27017
+    networks:
+      - app-network
+
+  # MySQL (BD relacional)
+  db:
+    image: mysql:8.0
+    container_name: gestorIncidencia-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_DATABASE: gestorIncidencia
+      MYSQL_USER: usuari
+      MYSQL_PASSWORD: usuari1234
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  # Adminer (opcional en producción, pero el profe lo deja a veces)
+  adminer:
+    image: adminer
+    container_name: gestorIncidencia-adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  mongo: 
+    image: mongo:latest 
+    volumes: 
+    - mongodb_data:/data/db 
+    ports: 
+    - "27017:27017" 
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: usuari 
+      MONGO_INITDB_ROOT_PASSWORD: usuari1234
+    networks: 
+      - app-network
+
+  mongo-express: 
+    image: mongo-express 
+    ports: 
+    - "8082:8081" 
+    environment: 
+    #Per entrar a la web de mongo-express, les credencials són 
+    #admin 
+    #pass 
+      ME_CONFIG_MONGODB_URL: mongodb://usuari:usuari1234@mongo:27017/ 
+    depends_on: 
+    - mongo 
+    networks: 
+      - app-network
+volumes:
+  mysql-data:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
