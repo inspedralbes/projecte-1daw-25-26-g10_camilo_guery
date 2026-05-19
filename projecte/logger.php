@@ -28,30 +28,33 @@ $collection = $client->gestorIncidencies->logs;
 
 /*
 |--------------------------------------------------------------------------
-| Registre de logs
+| Registre de logs de peticions
 |--------------------------------------------------------------------------
 |
-| Aquest bloc guarda informació bàsica de cada petició HTTP.
+| Aquest bloc desa informació bàsica de cada petició HTTP
+| rebuda pel servidor dins de MongoDB.
 |
-| Camps:
+| Camps registrats:
 |
 | - url:
-|   Ruta sol·licitada per l’usuari.
+|   Ruta o endpoint al qual accedeix l’usuari.
 |
 | - metode:
-|   Mètode HTTP utilitzat (GET, POST, etc.).
+|   Mètode HTTP utilitzat a la petició
+|   (GET, POST, PUT, DELETE, etc.).
 |
 | - timestamp:
-|   Data i hora exacta del registre.
+|   Data i hora exacta en què es registra la petició.
 |
 | - navegador:
-|   Informació del navegador o client.
+|   Informació del navegador o client que fa la petició
+|   mitjançant el User-Agent.
 |
 | - ip:
-|   IP del dispositiu que fa la petició.
+|   Adreça IP del client que realitza la petició.
 |
-| Aquest registre es crea cada vegada que es rep una petició
-| i s’executa aquest codi.
+| Aquest log es genera automàticament cada vegada
+| que el sistema executa aquest fragment de codi.
 |
 */
 
