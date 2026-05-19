@@ -25,6 +25,36 @@ $collection = $client->gestorIncidencies->logs;
 // =====================
 // INSERT LOG
 // =====================
+
+/*
+|--------------------------------------------------------------------------
+| Registre de logs
+|--------------------------------------------------------------------------
+|
+| Aquest bloc guarda informació bàsica de cada petició HTTP.
+|
+| Camps:
+|
+| - url:
+|   Ruta sol·licitada per l’usuari.
+|
+| - metode:
+|   Mètode HTTP utilitzat (GET, POST, etc.).
+|
+| - timestamp:
+|   Data i hora exacta del registre.
+|
+| - navegador:
+|   Informació del navegador o client.
+|
+| - ip:
+|   IP del dispositiu que fa la petició.
+|
+| Aquest registre es crea cada vegada que es rep una petició
+| i s’executa aquest codi.
+|
+*/
+
 $collection->insertOne([
     'url' => $_SERVER['REQUEST_URI'],
     'metodo' => $_SERVER['REQUEST_METHOD'],
